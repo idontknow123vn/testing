@@ -1,0 +1,2 @@
+1. thymeleaf có thư viện gốc là static, nên không cần viết thư mục static vào trong href hay src của thymeleaf
+2. input submit nếu k có action cho form chứa nó thì nó sẽ báo lỗi

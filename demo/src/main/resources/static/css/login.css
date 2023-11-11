@@ -1,0 +1,87 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css");
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
+}
+body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: white;
+    color: black;
+}
+.container {
+    width: 100vh;
+    max-width: 50%;
+    margin: auto;
+    align-items: center;
+}
+.container form {
+    padding: 20px;
+    box-shadow: 0 0 20px black;
+    border-radius: 5px;
+    flex-direction: column;
+    text-align: center;
+}
+.container h1 {
+    text-align: center;
+    margin-bottom: 24px;
+    animation: flashing 7s infinite;
+}
+.form-group {
+    margin: 10px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
+.form-group .title {
+    width: 85px;
+}
+.btn{
+    width: 20%;
+    height: 5%;
+    margin: 15px;
+    font-size: 20px;
+}
+@keyframes flashing {
+    0% {
+        color: rgb(255, 0, 0);
+        text-shadow: 0 0 15px rgb(255, 0, 0);
+    }
+    16.66666667% {
+        color: rgb(255, 255, 0);
+        text-shadow: 0 0 15px rgb(255, 255, 0);
+    }
+    33.33333333% {
+        color: rgb(0, 255, 0);
+        text-shadow: 0 0 15px rgb(0, 255, 0);
+    }
+    50% {
+        color: rgb(0, 255, 255);
+        text-shadow: 0 0 15px rgb(0, 255, 255);
+    }
+    66.66666667% {
+        color: rgb(0, 0, 255);
+        text-shadow: 0 0 15px rgb(0, 0, 255);
+    }
+    83.33333333% {
+        color: rgb(255, 0, 255);
+        text-shadow: 0 0 15px rgb(255, 0, 255);
+    }
+    100% {
+        color: rgb(255, 0, 0);
+        text-shadow: 0 0 15px rgb(255, 0, 0);
+    }
+}
+.input {
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+}
+.input .alert {
+    font-size: 10px;
+    color: red;
+    display: none;
+}
