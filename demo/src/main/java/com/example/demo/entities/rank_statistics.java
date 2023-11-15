@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.entities;
 
 public class rank_statistics extends normal_statistics {
 	private String rank;

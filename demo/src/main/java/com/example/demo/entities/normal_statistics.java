@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.entities;
 
 public class normal_statistics {
 	private int id, gamePlayed, gameWon;
