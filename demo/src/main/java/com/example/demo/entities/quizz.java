@@ -1,8 +1,14 @@
 package com.example.demo.entities;
 
+import java.util.Collection;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,10 +28,23 @@ public class quizz {
 	@Column(name = "timeAnswered")
 	private int timeAnswered;
 	
+	@OneToOne(mappedBy = "quizz", cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
+	private choose_one choose_one;
+	
+	@OneToOne(mappedBy = "quizz", cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
+	private writing writing;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	private Collection<choose_many> choose_many;
+	
 	public quizz() {
 		
 	}
+
 	public quizz(int idquizz, String quizz_info, byte[] picture, String subject, int difficulties, int timeAnswered) {
+		super();
 		this.idquizz = idquizz;
 		this.quizz_info = quizz_info;
 		this.picture = picture;
@@ -33,40 +52,77 @@ public class quizz {
 		this.difficulties = difficulties;
 		this.timeAnswered = timeAnswered;
 	}
-	public void setIdQuizz(int id) {
-		this.idquizz = id;
+
+	public int getIdquizz() {
+		return idquizz;
 	}
-	public void setInfo(String quizz_info) {
+
+	public void setIdquizz(int idquizz) {
+		this.idquizz = idquizz;
+	}
+
+	public String getQuizz_info() {
+		return quizz_info;
+	}
+
+	public void setQuizz_info(String quizz_info) {
 		this.quizz_info = quizz_info;
 	}
+
+	public byte[] getPicture() {
+		return picture;
+	}
+
 	public void setPicture(byte[] picture) {
 		this.picture = picture;
 	}
+
+	public String getSubject() {
+		return subject;
+	}
+
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
+
+	public int getDifficulties() {
+		return difficulties;
+	}
+
 	public void setDifficulties(int difficulties) {
 		this.difficulties = difficulties;
 	}
+
+	public int getTimeAnswered() {
+		return timeAnswered;
+	}
+
 	public void setTimeAnswered(int timeAnswered) {
 		this.timeAnswered = timeAnswered;
 	}
-	public int getIdQuizz() {
-		return this.idquizz;
+
+	public choose_one getChoose_one() {
+		return choose_one;
 	}
-	public String getInfo() {
-		return this.quizz_info;
+
+	public void setChoose_one(choose_one choose_one) {
+		this.choose_one = choose_one;
 	}
-	public byte[] getPicture() {
-		return this.picture;
+
+	public writing getWriting() {
+		return writing;
 	}
-	public String getSubject() {
-		return this.subject;
+
+	public void setWriting(writing writing) {
+		this.writing = writing;
 	}
-	public int getDifficulties() {
-		return this.difficulties;
+
+	public Collection<choose_many> getChoose_manies() {
+		return choose_many;
 	}
-	public int getTimeAnswered() {
-		return this.timeAnswered;
+
+	public void setChoose_manies(Collection<choose_many> choose_many) {
+		this.choose_many = choose_many;
 	}
+	
 }
