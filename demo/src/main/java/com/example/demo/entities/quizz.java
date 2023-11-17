@@ -10,7 +10,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "quizz")
 public class quizz {
@@ -38,10 +46,6 @@ public class quizz {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	private Collection<choose_many> choose_many;
-	
-	public quizz() {
-		
-	}
 
 	public quizz(int idquizz, String quizz_info, byte[] picture, String subject, int difficulties, int timeAnswered) {
 		super();
@@ -53,76 +57,4 @@ public class quizz {
 		this.timeAnswered = timeAnswered;
 	}
 
-	public int getIdquizz() {
-		return idquizz;
-	}
-
-	public void setIdquizz(int idquizz) {
-		this.idquizz = idquizz;
-	}
-
-	public String getQuizz_info() {
-		return quizz_info;
-	}
-
-	public void setQuizz_info(String quizz_info) {
-		this.quizz_info = quizz_info;
-	}
-
-	public byte[] getPicture() {
-		return picture;
-	}
-
-	public void setPicture(byte[] picture) {
-		this.picture = picture;
-	}
-
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-
-	public int getDifficulties() {
-		return difficulties;
-	}
-
-	public void setDifficulties(int difficulties) {
-		this.difficulties = difficulties;
-	}
-
-	public int getTimeAnswered() {
-		return timeAnswered;
-	}
-
-	public void setTimeAnswered(int timeAnswered) {
-		this.timeAnswered = timeAnswered;
-	}
-
-	public choose_one getChoose_one() {
-		return choose_one;
-	}
-
-	public void setChoose_one(choose_one choose_one) {
-		this.choose_one = choose_one;
-	}
-
-	public writing getWriting() {
-		return writing;
-	}
-
-	public void setWriting(writing writing) {
-		this.writing = writing;
-	}
-
-	public Collection<choose_many> getChoose_manies() {
-		return choose_many;
-	}
-
-	public void setChoose_manies(Collection<choose_many> choose_many) {
-		this.choose_many = choose_many;
-	}
-	
 }

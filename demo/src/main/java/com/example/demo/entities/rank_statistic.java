@@ -7,7 +7,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "rank_statistic")
 public class rank_statistic {
@@ -26,11 +34,7 @@ public class rank_statistic {
 	@OneToOne
 	@MapsId
 	@JoinColumn(name = "iduser")
-	private account account;
-	
-	public rank_statistic() {
-		
-	}
+	private user account;
 
 	public rank_statistic(int id, String rank, int point, int gamePlayed, int gameWon) {
 		super();
@@ -39,53 +43,5 @@ public class rank_statistic {
 		this.point = point;
 		this.gamePlayed = gamePlayed;
 		this.gameWon = gameWon;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getRank() {
-		return rank;
-	}
-
-	public void setRank(String rank) {
-		this.rank = rank;
-	}
-
-	public int getPoint() {
-		return point;
-	}
-
-	public void setPoint(int point) {
-		this.point = point;
-	}
-
-	public int getGamePlayed() {
-		return gamePlayed;
-	}
-
-	public void setGamePlayed(int gamePlayed) {
-		this.gamePlayed = gamePlayed;
-	}
-
-	public int getGameWon() {
-		return gameWon;
-	}
-
-	public void setGameWon(int gameWon) {
-		this.gameWon = gameWon;
-	}
-
-	public account getAccount() {
-		return account;
-	}
-
-	public void setAccount(account account) {
-		this.account = account;
 	}
 }

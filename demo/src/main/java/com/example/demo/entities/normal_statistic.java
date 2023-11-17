@@ -7,7 +7,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "normal_statistic")
 public class normal_statistic {
@@ -22,11 +30,7 @@ public class normal_statistic {
 	@OneToOne
 	@MapsId
 	@JoinColumn(name = "iduser")
-	private account account;
-	
-	public normal_statistic() {
-		
-	}
+	private user account;
 	
 	public normal_statistic(int id, int gamePlayed, int gameWon) {
 		super();
@@ -34,37 +38,4 @@ public class normal_statistic {
 		this.gamePlayed = gamePlayed;
 		this.gameWon = gameWon;
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getGamePlayed() {
-		return gamePlayed;
-	}
-
-	public void setGamePlayed(int gamePlayed) {
-		this.gamePlayed = gamePlayed;
-	}
-
-	public int getGameWon() {
-		return gameWon;
-	}
-
-	public void setGameWon(int gameWon) {
-		this.gameWon = gameWon;
-	}
-
-	public account getAccount() {
-		return account;
-	}
-
-	public void setAccount(account account) {
-		this.account = account;
-	}
-	
 }
