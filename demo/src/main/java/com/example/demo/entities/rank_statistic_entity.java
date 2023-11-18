@@ -26,7 +26,7 @@ public class rank_statistic_entity {
 	@OneToOne
 	@MapsId
 	@JoinColumn(name = "iduser")
-	private user_entity account;
+	private user_entity user;
 
 	public rank_statistic_entity(int id, String rank, int point, int gamePlayed, int gameWon) {
 		super();
@@ -39,14 +39,14 @@ public class rank_statistic_entity {
 	public rank_statistic_entity() {
 		
 	}
-	public rank_statistic_entity(int id, String rank, int point, int gamePlayed, int gameWon, user_entity account) {
+	public rank_statistic_entity(int id, String rank, int point, int gamePlayed, int gameWon, user_entity user) {
 		super();
 		this.id = id;
 		this.rank = rank;
 		this.point = point;
 		this.gamePlayed = gamePlayed;
 		this.gameWon = gameWon;
-		this.account = account;
+		this.user = user;
 	}
 	public int getId() {
 		return id;
@@ -79,10 +79,10 @@ public class rank_statistic_entity {
 		this.gameWon = gameWon;
 	}
 	public user_entity getAccount() {
-		return account;
+		return user;
 	}
-	public void setAccount(user_entity account) {
-		this.account = account;
+	public void setAccount(user_entity user) {
+		this.user = user;
 	}
 	
 }
