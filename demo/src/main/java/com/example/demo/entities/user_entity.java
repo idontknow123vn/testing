@@ -38,7 +38,7 @@ public class user_entity {
 	@PrimaryKeyJoinColumn
 	private normal_entity normal_statistic;
 	
-	@OneToOne(mappedBy = "account")
+	@OneToOne(mappedBy = "user")
 	@PrimaryKeyJoinColumn
 	private rank_statistic_entity rank_statistic;
 	
