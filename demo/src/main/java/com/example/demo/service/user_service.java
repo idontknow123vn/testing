@@ -7,20 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entities.user;
+import com.example.demo.dto.user_dto;
+import com.example.demo.entities.user_entity;
 import com.example.demo.repository.user_repos;
 
-@Service
-public class user_service {
-	private final user_repos user_repos;
-	@Autowired
-	public user_service(user_repos user_repos) {
-		this.user_repos = user_repos;
-	}
-	public Optional<user> findUser(int id){
-		return user_repos.findById(id);
-	}
-	public List<user> findAllUsers(){
-		return user_repos.findAll();
-	}
+public interface user_service {
+	user_dto createUser(user_dto user_dto);
+	user_dto getUserById(int iduser);
+	List<user_dto> getAllUser();
+	user_dto updateUser(user_dto user);
+	void deleteUser(int iduser);
 }
