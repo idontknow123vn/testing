@@ -5,27 +5,33 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName(value = "null")
-public class normal_dto {
+public class rank_dto {
 	private long iduser;
+	private String rank;
+	private int point;
 	private int gamePlayed;
 	private int gameWon;
 	@JsonIgnore
 	private user_entity user_entity;
-	public normal_dto(long iduser, int gamePlayed, int gameWon,
+	public rank_dto(long iduser, String rank, int point, int gamePlayed, int gameWon,
 			com.example.demo.entities.user_entity user_entity) {
 		super();
 		this.iduser = iduser;
+		this.rank = rank;
+		this.point = point;
 		this.gamePlayed = gamePlayed;
 		this.gameWon = gameWon;
 		this.user_entity = user_entity;
 	}
-	public normal_dto(long iduser, int gamePlayed, int gameWon) {
+	public rank_dto(long iduser, String rank, int point, int gamePlayed, int gameWon) {
 		super();
 		this.iduser = iduser;
+		this.rank = rank;
+		this.point = point;
 		this.gamePlayed = gamePlayed;
 		this.gameWon = gameWon;
 	}
-	public normal_dto() {
+	public rank_dto() {
 		
 	}
 	public long getIduser() {
@@ -33,6 +39,18 @@ public class normal_dto {
 	}
 	public void setIduser(long iduser) {
 		this.iduser = iduser;
+	}
+	public String getRank() {
+		return rank;
+	}
+	public void setRank(String rank) {
+		this.rank = rank;
+	}
+	public int getPoint() {
+		return point;
+	}
+	public void setPoint(int point) {
+		this.point = point;
 	}
 	public int getGamePlayed() {
 		return gamePlayed;

@@ -7,11 +7,21 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.normal_dto;
+import com.example.demo.dto.rank_dto;
 import com.example.demo.dto.user_dto;
+import com.example.demo.repository.normal_repos;
+import com.example.demo.repository.rank_repos;
 import com.example.demo.repository.user_repos;
 import com.example.demo.service.user_service;
 
+import ch.qos.logback.core.joran.action.NewRuleAction;
+
+import com.example.demo.entities.normal_entity;
+import com.example.demo.entities.rank_entity;
 import com.example.demo.entities.user_entity;
+import com.example.demo.mappers.normal_mapper;
+import com.example.demo.mappers.rank_mapper;
 import com.example.demo.mappers.user_mapper;
 
 @Service
@@ -19,10 +29,22 @@ public class user_service_impl implements user_service {
 	@Autowired
 	private user_repos user_repos;
 	
+	@Autowired
+	private normal_repos normal_repos;
+	
+	@Autowired
+	private rank_repos rank_repos;
+	
 	@Override
 	public user_dto createUser(user_dto user_dto) {
 		
 		user_entity user_entity = user_mapper.mapToUser_entity(user_dto);
+		normal_entity normal = normal_mapper.mapToNormal_entity(new normal_dto());
+		rank_entity rank = rank_mapper.mapToRank_entity(new rank_dto());
+		user_entity.setNormal_statistic(normal);
+		user_entity.setRank_statistic(rank);
+		normal.setUser(user_entity);
+		rank.setUser(user_entity);
 		user_entity saved_user = user_repos.save(user_entity);
 		user_dto saved_user_dto = user_mapper.mapToUser_dto(saved_user);
 		return saved_user_dto;
@@ -30,7 +52,7 @@ public class user_service_impl implements user_service {
 	}
 
 	@Override
-	public user_dto getUserById(int iduser) {
+	public user_dto getUserById(long iduser) {
 		// TODO Auto-generated method stub
 		Optional<user_entity> optional = user_repos.findById(iduser);
 		user_dto user_dto = user_mapper.mapToUser_dto(optional.get());
@@ -56,8 +78,10 @@ public class user_service_impl implements user_service {
 	}
 
 	@Override
-	public void deleteUser(int iduser) {
+	public void deleteUser(long iduser) {
 		// TODO Auto-generated method stub
+		normal_repos.deleteById(iduser);
+		rank_repos.deleteById(iduser);
 		user_repos.deleteById(iduser);
 	}
 }

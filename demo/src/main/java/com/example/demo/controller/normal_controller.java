@@ -23,23 +23,23 @@ public class normal_controller {
 	
 	@GetMapping("/{iduser}")
 	public ResponseEntity<Object> getNormal_statById(@PathVariable("iduser") int iduser){
-		normal_dto find_Dto = service.getNormalStatisticById(iduser);
-		return new ResponseEntity<Object>(find_Dto,HttpStatus.OK);
+		normal_dto find_Dto = service.getNormalStatById(iduser);
+		return new ResponseEntity<Object>(find_Dto, HttpStatus.OK);
 	}
 	@PostMapping
 	public ResponseEntity<Object> createNormal_stat(@RequestBody normal_dto dto){
-		normal_dto create_Dto = service.createNormal_statistic(dto);
+		normal_dto create_Dto = service.createNormalStat(dto);
 		return new ResponseEntity<Object>(create_Dto, HttpStatus.CREATED);
 	}
 	@PutMapping("/{iduser}")
 	public ResponseEntity<Object> updateNormal_stat(@PathVariable("iduser") int iduser, @RequestBody normal_dto dto){
 		dto.setIduser(iduser);
-		normal_dto updateDto = service.updateNormal_statistic(dto);
+		normal_dto updateDto = service.updateNormalStat(dto);
 		return new ResponseEntity<Object>(updateDto, HttpStatus.CREATED);
 	}
 	@DeleteMapping("/{iduser}")
 	public ResponseEntity<String> deleteNormal_stat(@PathVariable("iduser") int iduser){
-		service.deleteNormal_statistic(iduser);
+		service.deleteNormalStat(iduser);
 		return new ResponseEntity<String>("Delete statistic successfully", HttpStatus.OK);
 	}
 }

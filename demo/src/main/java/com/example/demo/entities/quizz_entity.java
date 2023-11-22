@@ -2,11 +2,15 @@ package com.example.demo.entities;
 
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -16,61 +20,63 @@ import jakarta.persistence.Table;
 @Table(name = "quizz")
 public class quizz_entity {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "idquizz")
-	private int idquizz;
+	private long idquizz;
 	@Column(name = "quizz_info")
 	private String quizz_info;
 	@Column(name = "picture")
 	private byte[] picture;
 	@Column(name = "subject")
 	private String subject;
-	@Column(name = "difficulties")
-	private int difficulties;
+	@Column(name = "difficulty")
+	private int difficulty;
 	@Column(name = "timeAnswered")
 	private int timeAnswered;
 	
-	@OneToOne(mappedBy = "quizz", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "quizz", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
+	@JsonManagedReference
 	private choose_one_entity choose_one;
 	
-	@OneToOne(mappedBy = "quizz", cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn
-	private writing_entity writing;
+	@OneToMany(mappedBy = "quizz", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference
+	private Collection<writing_entity> writing;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "idquizz", referencedColumnName = "idquizz")
+	@OneToMany(mappedBy = "quizz", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private Collection<choose_many_entity> choose_many;
 
-	public quizz_entity(int idquizz, String quizz_info, byte[] picture, String subject, int difficulties, int timeAnswered) {
+	public quizz_entity(long idquizz, String quizz_info, byte[] picture, String subject, int difficulty, int timeAnswered) {
 		super();
 		this.idquizz = idquizz;
 		this.quizz_info = quizz_info;
 		this.picture = picture;
 		this.subject = subject;
-		this.difficulties = difficulties;
+		this.difficulty = difficulty;
 		this.timeAnswered = timeAnswered;
 	}
 	public quizz_entity() {
 		
 	}
-	public quizz_entity(int idquizz, String quizz_info, byte[] picture, String subject, int difficulties, int timeAnswered,
-			com.example.demo.entities.choose_one_entity choose_one, com.example.demo.entities.writing_entity writing,
+	public quizz_entity(long idquizz, String quizz_info, byte[] picture, String subject, int difficulty, int timeAnswered,
+			com.example.demo.entities.choose_one_entity choose_one, Collection<com.example.demo.entities.writing_entity> writing,
 			Collection<com.example.demo.entities.choose_many_entity> choose_many) {
 		super();
 		this.idquizz = idquizz;
 		this.quizz_info = quizz_info;
 		this.picture = picture;
 		this.subject = subject;
-		this.difficulties = difficulties;
+		this.difficulty = difficulty;
 		this.timeAnswered = timeAnswered;
 		this.choose_one = choose_one;
 		this.writing = writing;
 		this.choose_many = choose_many;
 	}
-	public int getIdquizz() {
+	public long getIdquizz() {
 		return idquizz;
 	}
-	public void setIdquizz(int idquizz) {
+	public void setIdquizz(long idquizz) {
 		this.idquizz = idquizz;
 	}
 	public String getQuizz_info() {
@@ -91,11 +97,11 @@ public class quizz_entity {
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-	public int getDifficulties() {
-		return difficulties;
+	public int getDifficulty() {
+		return difficulty;
 	}
-	public void setDifficulties(int difficulties) {
-		this.difficulties = difficulties;
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
 	}
 	public int getTimeAnswered() {
 		return timeAnswered;
@@ -107,19 +113,27 @@ public class quizz_entity {
 		return choose_one;
 	}
 	public void setChoose_one(choose_one_entity choose_one) {
+		if(choose_one == null) {
+			if(this.choose_one != null) {
+				this.choose_one.setQuizz(null);
+			}
+		}
+		else {
+			choose_one.setQuizz(this);
+		}
 		this.choose_one = choose_one;
-	}
-	public writing_entity getWriting() {
-		return writing;
-	}
-	public void setWriting(writing_entity writing) {
-		this.writing = writing;
 	}
 	public Collection<choose_many_entity> getChoose_many() {
 		return choose_many;
 	}
 	public void setChoose_many(Collection<choose_many_entity> choose_many) {
 		this.choose_many = choose_many;
+	}
+	public Collection<writing_entity> getWriting() {
+		return writing;
+	}
+	public void setWriting(Collection<writing_entity> writing) {
+		this.writing = writing;
 	}
 	
 }
