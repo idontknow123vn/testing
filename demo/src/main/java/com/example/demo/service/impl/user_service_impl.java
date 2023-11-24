@@ -84,4 +84,13 @@ public class user_service_impl implements user_service {
 		rank_repos.deleteById(iduser);
 		user_repos.deleteById(iduser);
 	}
+
+	@Override
+	public user_dto login(List<String> input) {
+		// TODO Auto-generated method stub
+		String username = input.get(0);
+		String password = input.get(1);
+		user_entity foundEntity = user_repos.login(username, password);
+		return user_mapper.mapToUser_dto(foundEntity);
+	}
 }

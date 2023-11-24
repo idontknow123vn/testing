@@ -15,4 +15,7 @@ public interface user_repos extends JpaRepository<user_entity, Long> {
 //			+ "from pbl4.user as user",
 //			nativeQuery = true)
 //	List<user_entity> findAll();
+	@Query("SELECT NEW com.example.demo.entities.user_entity(entity.iduser, entity.password, entity.name, entity.username, entity.gender, entity.dateCreated, entity.status, entity.normal_statistic, entity.rank_statistic)"
+			+ "FROM user_entity AS entity WHERE entity.username=:username AND entity.password=:password")
+	user_entity login(String username, String password);
 }
