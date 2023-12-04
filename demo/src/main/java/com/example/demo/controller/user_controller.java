@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.user_dto;
 import com.example.demo.service.user_service;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
-@RequestMapping("/api/user")
+@CrossOrigin("*")
+@RequestMapping(value = "/api/user")
 public class user_controller {
 	@Autowired
 	private user_service user_service;
@@ -49,10 +53,14 @@ public class user_controller {
 		user_service.deleteUser(iduser);
 		return new ResponseEntity<String>("User successfully deleted", HttpStatus.OK);
 	}
-	
-	@GetMapping("/login")
+	@PutMapping(value = "/login")
 	public ResponseEntity<Object> login(@RequestBody List<String> list){
 		user_dto foundUser = user_service.login(list);
 		return new ResponseEntity<Object>(foundUser, HttpStatus.OK);
+	}
+	@PutMapping(value = "/logout")
+	public ResponseEntity<String> logout(@RequestBody user_dto dto){
+		user_service.logout(dto);
+		return new ResponseEntity<String>("User successfully deleted", HttpStatus.OK);
 	}
 }
