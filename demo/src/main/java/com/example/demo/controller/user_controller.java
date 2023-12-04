@@ -53,7 +53,7 @@ public class user_controller {
 		user_service.deleteUser(iduser);
 		return new ResponseEntity<String>("User successfully deleted", HttpStatus.OK);
 	}
-	@GetMapping(value = "/login")
+	@PutMapping(value = "/login")
 	public ResponseEntity<Object> login(@RequestBody List<String> list){
 		user_dto foundUser = user_service.login(list);
 		return new ResponseEntity<Object>(foundUser, HttpStatus.OK);
