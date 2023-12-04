@@ -17,7 +17,7 @@ public class normal_service_impl implements normal_service {
 	private normal_repos normal_repos;
 
 	@Override
-	public normal_dto getNormalStatisticById(int iduser) {
+	public normal_dto getNormalStatById(long iduser) {
 		// TODO Auto-generated method stub
 		Optional<normal_entity> entities = normal_repos.findById(iduser);
 		normal_dto dto = normal_mapper.mapToNormal_dto(entities.get());
@@ -25,7 +25,7 @@ public class normal_service_impl implements normal_service {
 	}
 
 	@Override
-	public normal_dto createNormal_statistic(normal_dto statistic) {
+	public normal_dto createNormalStat(normal_dto statistic) {
 		// TODO Auto-generated method stub
 		normal_entity entity = normal_mapper.mapToNormal_entity(statistic);
 		normal_entity saved_entity = normal_repos.save(entity);
@@ -34,7 +34,7 @@ public class normal_service_impl implements normal_service {
 	}
 
 	@Override
-	public normal_dto updateNormal_statistic(normal_dto statistic) {
+	public normal_dto updateNormalStat(normal_dto statistic) {
 		// TODO Auto-generated method stub
 		normal_entity existing_Entity = normal_repos.findById(statistic.getIduser()).get();
 		existing_Entity.setGamePlayed(statistic.getGamePlayed());
@@ -44,7 +44,7 @@ public class normal_service_impl implements normal_service {
 	}
 
 	@Override
-	public void deleteNormal_statistic(int iduser) {
+	public void deleteNormalStat(long iduser) {
 		// TODO Auto-generated method stub
 		normal_repos.deleteById(iduser);
 	}

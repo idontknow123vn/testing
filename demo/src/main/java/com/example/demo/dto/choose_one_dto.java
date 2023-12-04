@@ -1,38 +1,29 @@
-package com.example.demo.entities;
+package com.example.demo.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.demo.entities.quizz_entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "choose_one")
-public class choose_one_entity {
-	@Id
-	@Column(name = "idquizz")
+@JsonRootName(value = "null")
+public class choose_one_dto {
 	private long idquizz;
-	@Column(name = "right_answer")
 	private String right_answer;
-	@Column(name = "wrong_answer1")
 	private String wrong_answer1;
-	@Column(name = "wrong_answer2")
 	private String wrong_answer2;
-	@Column(name = "wrong_answer3")
 	private String wrong_answer3;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId
-	@JoinColumn(name = "idquizz")
-	@JsonBackReference
+	@JsonIgnore
 	private quizz_entity quizz;
-	
-	public choose_one_entity(long idquizz, String right_answer, String wrong_answer1, String wrong_answer2,
+	public choose_one_dto(long idquizz, String right_answer, String wrong_answer1, String wrong_answer2,
+			String wrong_answer3, quizz_entity quizz) {
+		super();
+		this.idquizz = idquizz;
+		this.right_answer = right_answer;
+		this.wrong_answer1 = wrong_answer1;
+		this.wrong_answer2 = wrong_answer2;
+		this.wrong_answer3 = wrong_answer3;
+		this.quizz = quizz;
+	}
+	public choose_one_dto(long idquizz, String right_answer, String wrong_answer1, String wrong_answer2,
 			String wrong_answer3) {
 		super();
 		this.idquizz = idquizz;
@@ -41,18 +32,8 @@ public class choose_one_entity {
 		this.wrong_answer2 = wrong_answer2;
 		this.wrong_answer3 = wrong_answer3;
 	}
-	public choose_one_entity() {
+	public choose_one_dto() {
 		
-	}
-	public choose_one_entity(long idquizz, String right_answer, String wrong_answer1, String wrong_answer2,
-			String wrong_answer3, com.example.demo.entities.quizz_entity quizz) {
-		super();
-		this.idquizz = idquizz;
-		this.right_answer = right_answer;
-		this.wrong_answer1 = wrong_answer1;
-		this.wrong_answer2 = wrong_answer2;
-		this.wrong_answer3 = wrong_answer3;
-		this.quizz = quizz;
 	}
 	public long getIdquizz() {
 		return idquizz;
@@ -90,4 +71,5 @@ public class choose_one_entity {
 	public void setQuizz(quizz_entity quizz) {
 		this.quizz = quizz;
 	}
+	
 }

@@ -3,10 +3,10 @@ package com.example.demo.dto;
 import java.sql.Date;
 
 import com.example.demo.entities.normal_entity;
-import com.example.demo.entities.rank_statistic_entity;
+import com.example.demo.entities.rank_entity;
 
 public class user_dto {
-	private int iduser;
+	private long iduser;
 	private String password;
 	private String name;
 	private String username;
@@ -14,8 +14,8 @@ public class user_dto {
 	private Date dateCreated;
 	private boolean status;
 	private normal_entity normal_statistic;
-	private rank_statistic_entity rank_statistic;
-	public user_dto(int iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status) {
+	private rank_entity rank_statistic;
+	public user_dto(long iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status) {
 		super();
 		this.iduser = iduser;
 		this.password = password;
@@ -26,8 +26,8 @@ public class user_dto {
 		this.status = status;
 	}
 	
-	public user_dto(int iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status,
-			normal_entity normal_statistic, rank_statistic_entity rank_statistic) {
+	public user_dto(long iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status,
+			normal_entity normal_statistic, rank_entity rank_statistic) {
 		super();
 		this.iduser = iduser;
 		this.password = password;
@@ -52,17 +52,17 @@ public class user_dto {
 		this.normal_statistic = normal_statistic;
 	}
 
-	public rank_statistic_entity getRank_statistic() {
+	public rank_entity getRank_statistic() {
 		return rank_statistic;
 	}
 
-	public void setRank_statistic(rank_statistic_entity rank_statistic) {
+	public void setRank_statistic(rank_entity rank_statistic) {
 		this.rank_statistic = rank_statistic;
 	}
-	public int getIduser() {
+	public long getIduser() {
 		return iduser;
 	}
-	public void setIduser(int iduser) {
+	public void setIduser(long iduser) {
 		this.iduser = iduser;
 	}
 	public String getPassword() {

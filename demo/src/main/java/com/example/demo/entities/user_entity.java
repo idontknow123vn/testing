@@ -4,8 +4,12 @@ import java.sql.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,12 +18,12 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class user_entity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "iduser")
-	private int iduser;
+	private long iduser;
 	@Column(name = "password")
 	private String password;
 	@Column(name = "name")
@@ -34,19 +38,21 @@ public class user_entity {
 	@Column(name = "status")
 	private boolean status;
 	
-	@OneToOne(mappedBy = "user")
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
+	@JsonManagedReference
 	private normal_entity normal_statistic;
 	
-	@OneToOne(mappedBy = "user")
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
-	private rank_statistic_entity rank_statistic;
+	@JsonManagedReference
+	private rank_entity rank_statistic;
 	
 	public user_entity() {
 		
 	}
 	
-	public user_entity(int iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status) {
+	public user_entity(long iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status) {
 		super();
 		this.iduser = iduser;
 		this.password = password;
@@ -57,9 +63,9 @@ public class user_entity {
 		this.status = status;
 	}
 
-	public user_entity(int iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status,
+	public user_entity(long iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status,
 			com.example.demo.entities.normal_entity normal_statistic,
-			com.example.demo.entities.rank_statistic_entity rank_statistic) {
+			com.example.demo.entities.rank_entity rank_statistic) {
 		super();
 		this.iduser = iduser;
 		this.password = password;
@@ -71,12 +77,13 @@ public class user_entity {
 		this.normal_statistic = normal_statistic;
 		this.rank_statistic = rank_statistic;
 	}
+	
 
-	public int getIduser() {
+	public long getIduser() {
 		return iduser;
 	}
 
-	public void setIduser(int iduser) {
+	public void setIduser(long iduser) {
 		this.iduser = iduser;
 	}
 
@@ -133,14 +140,30 @@ public class user_entity {
 	}
 
 	public void setNormal_statistic(normal_entity normal_statistic) {
+		if(normal_statistic == null) {
+			if(this.normal_statistic != null) {
+				this.normal_statistic.setUser(null);
+			}
+		}
+		else {
+			normal_statistic.setUser(this);
+		}
 		this.normal_statistic = normal_statistic;
 	}
 
-	public rank_statistic_entity getRank_statistic() {
+	public rank_entity getRank_statistic() {
 		return rank_statistic;
 	}
 
-	public void setRank_statistic(rank_statistic_entity rank_statistic) {
+	public void setRank_statistic(rank_entity rank_statistic) {
+		if(rank_statistic == null) {
+			if(this.rank_statistic != null) {
+				this.rank_statistic.setUser(null);
+			}
+		}
+		else {
+			rank_statistic.setUser(this);
+		}
 		this.rank_statistic = rank_statistic;
 	}
 	

@@ -18,7 +18,7 @@ import com.example.demo.dto.user_dto;
 import com.example.demo.service.user_service;
 
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("/api/user")
 public class user_controller {
 	@Autowired
 	private user_service user_service;
@@ -42,11 +42,17 @@ public class user_controller {
 	public ResponseEntity<Object> updateUser(@PathVariable("iduser") int iduser, @RequestBody user_dto user){
 		user.setIduser(iduser);
 		user_dto updated_user = user_service.updateUser(user);
-		return new ResponseEntity<Object>(updated_user, HttpStatus.CREATED);	
+		return new ResponseEntity<Object>(updated_user, HttpStatus.OK);	
 	}
 	@DeleteMapping("/{iduser}")
 	public ResponseEntity<String> deleteUser(@PathVariable("iduser") int iduser){
 		user_service.deleteUser(iduser);
 		return new ResponseEntity<String>("User successfully deleted", HttpStatus.OK);
+	}
+	
+	@GetMapping("/login")
+	public ResponseEntity<Object> login(@RequestBody List<String> list){
+		user_dto foundUser = user_service.login(list);
+		return new ResponseEntity<Object>(foundUser, HttpStatus.OK);
 	}
 }

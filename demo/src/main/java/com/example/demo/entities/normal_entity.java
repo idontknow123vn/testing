@@ -1,5 +1,7 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -13,18 +15,21 @@ import jakarta.persistence.Table;
 public class normal_entity {
 	@Id
 	@Column(name = "iduser")
-	private int iduser;
+	private long iduser;
+	
 	@Column(name = "gamePlayed")
 	private int gamePlayed;
+	
 	@Column(name = "gameWon")
 	private int gameWon;
 	
 	@OneToOne
 	@MapsId
 	@JoinColumn(name = "iduser")
+	@JsonBackReference
 	private user_entity user;
 	
-	public normal_entity(int iduser, int gamePlayed, int gameWon) {
+	public normal_entity(long iduser, int gamePlayed, int gameWon) {
 		super();
 		this.iduser = iduser;
 		this.gamePlayed = gamePlayed;
@@ -35,7 +40,7 @@ public class normal_entity {
 		
 	}
 
-	public normal_entity(int id, int gamePlayed, int gameWon, com.example.demo.entities.user_entity user) {
+	public normal_entity(long id, int gamePlayed, int gameWon, com.example.demo.entities.user_entity user) {
 		super();
 		this.iduser = id;
 		this.gamePlayed = gamePlayed;
@@ -43,11 +48,11 @@ public class normal_entity {
 		this.user = user;
 	}
 
-	public int getIduser() {
+	public long getIduser() {
 		return iduser;
 	}
 
-	public void setIduser(int iduser) {
+	public void setIduser(long iduser) {
 		this.iduser = iduser;
 	}
 
