@@ -5,18 +5,21 @@ import com.example.demo.entities.user_entity;
 
 public class user_mapper {
 	public static user_dto mapToUser_dto(user_entity user_entity) {
-		user_dto user_dto = new user_dto(
-				user_entity.getIduser(), 
-				user_entity.getPassword(), 
-				user_entity.getName(),
-				user_entity.getUsername(),
-				user_entity.isGender(), 
-				user_entity.getDateCreated(), 
-				user_entity.isStatus(),
-				user_entity.getNormal_statistic(),
-				user_entity.getRank_statistic()
-		);
-		return user_dto;
+		if(user_entity == null) return null;
+		else {
+			user_dto user_dto = new user_dto(
+					user_entity.getIduser(), 
+					user_entity.getPassword(), 
+					user_entity.getName(),
+					user_entity.getUsername(),
+					user_entity.isGender(), 
+					user_entity.getDateCreated(), 
+					user_entity.isStatus(),
+					user_entity.getNormal_statistic(),
+					user_entity.getRank_statistic()
+			);
+			return user_dto;
+		}
 	}
 	public static user_entity mapToUser_entity(user_dto user_dto) {
 		user_entity user_entity = new user_entity(
