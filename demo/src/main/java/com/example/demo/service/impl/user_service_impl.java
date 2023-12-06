@@ -91,6 +91,16 @@ public class user_service_impl implements user_service {
 		String username = input.get(0);
 		String password = input.get(1);
 		user_entity foundEntity = user_repos.login(username, password);
-		return user_mapper.mapToUser_dto(foundEntity);
+		foundEntity.setStatus(true);
+		user_entity loginEntity = user_repos.save(foundEntity);
+		return user_mapper.mapToUser_dto(loginEntity);
+	}
+
+	@Override
+	public void logout(user_dto user) {
+		// TODO Auto-generated method stub
+		user_entity existing_user= user_repos.findById(user.getIduser()).get();
+		existing_user.setStatus(false);
+		user_repos.save(existing_user);
 	}
 }

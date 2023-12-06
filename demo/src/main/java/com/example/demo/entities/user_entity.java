@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import java.sql.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -33,6 +34,7 @@ public class user_entity {
 	@Column(name = "gender")
 	private boolean gender;
 	@Column(name = "dateCreated")
+	@CreationTimestamp
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateCreated;
 	@Column(name = "status")

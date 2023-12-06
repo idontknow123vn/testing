@@ -11,4 +11,5 @@ public interface user_service {
 	user_dto updateUser(user_dto user);
 	void deleteUser(long iduser);
 	user_dto login(List<String> input);
+	void logout(user_dto dto);
 }
