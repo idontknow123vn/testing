@@ -21,6 +21,14 @@ public class user_mapper {
 			return user_dto;
 		}
 	}
+	public static user_dto mapIncompleteToUser_dto(user_entity entity) {
+		user_dto dto = new user_dto();
+		dto.setIduser(entity.getIduser());
+		dto.setName(entity.getName());
+		dto.setNormal_statistic(entity.getNormal_statistic());
+		dto.setRank_statistic(entity.getRank_statistic());
+		return dto;
+	}
 	public static user_entity mapToUser_entity(user_dto user_dto) {
 		user_entity user_entity = new user_entity(
 				user_dto.getIduser(),
