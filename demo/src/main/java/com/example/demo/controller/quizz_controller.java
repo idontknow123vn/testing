@@ -66,4 +66,9 @@ public class quizz_controller {
 		quizz_service.deleteQuizz(idquizz);
 		return new ResponseEntity<Object>("quizz deleted successfully", HttpStatus.OK);
 	}
+	@GetMapping("/generate")
+	public ResponseEntity<Object> generateQuizz(){
+		List<quizz_dto> list = quizz_service.generateQuizz();
+		return new ResponseEntity<Object>(list, HttpStatus.OK);
+	}
 }

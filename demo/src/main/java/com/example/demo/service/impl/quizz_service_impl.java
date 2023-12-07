@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.choose_one_dto;
@@ -29,6 +30,7 @@ public class quizz_service_impl implements quizz_service {
 	private choose_many_repos choose_many_repos;
 	@Autowired
 	private writing_repos writing_repos;
+	
 
 	@Override
 	public quizz_dto createQuizz(quizz_dto dto) {
@@ -77,6 +79,13 @@ public class quizz_service_impl implements quizz_service {
 		writing_repos.deleteAllInBatch(writing_repos.getListAnswerByIdquizz(idquizz));
 		choose_one_repos.deleteById(idquizz);
 		quizz_repos.deleteById(idquizz);
+	}
+
+	@Override
+	public List<quizz_dto> generateQuizz() {
+		// TODO Auto-generated method stub
+		List<quizz_entity> list1 = quizz_repos.generateQuiz(PageRequest.of(0, 5));
+		return list1.stream().map(quizz_mapper::mapToQuizz_dto_rand).collect(Collectors.toList());
 	}
 	
 }

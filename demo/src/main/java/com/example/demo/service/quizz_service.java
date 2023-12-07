@@ -8,6 +8,7 @@ public interface quizz_service {
 	quizz_dto createQuizz(quizz_dto dto);
 	quizz_dto getQuizzById(long idquizz);
 	List<quizz_dto> getAllQuizz();
+	List<quizz_dto> generateQuizz();
 	quizz_dto updateQuizz(quizz_dto dto);
 	void deleteQuizz(long idquizz);
 }

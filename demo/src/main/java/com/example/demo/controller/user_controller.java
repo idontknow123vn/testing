@@ -63,4 +63,9 @@ public class user_controller {
 		user_service.logout(dto);
 		return new ResponseEntity<String>("User successfully deleted", HttpStatus.OK);
 	}
+	@PutMapping(value = "/rank")
+	public ResponseEntity<Object> getTop10(){
+		List<user_dto> list = user_service.getTopTen();
+		return new ResponseEntity<Object>(list, HttpStatus.OK);
+	}
 }
