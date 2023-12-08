@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.normal_dto;
@@ -14,8 +15,6 @@ import com.example.demo.repository.normal_repos;
 import com.example.demo.repository.rank_repos;
 import com.example.demo.repository.user_repos;
 import com.example.demo.service.user_service;
-
-import ch.qos.logback.core.joran.action.NewRuleAction;
 
 import com.example.demo.entities.normal_entity;
 import com.example.demo.entities.rank_entity;
@@ -102,5 +101,12 @@ public class user_service_impl implements user_service {
 		user_entity existing_user= user_repos.findById(user.getIduser()).get();
 		existing_user.setStatus(false);
 		user_repos.save(existing_user);
+	}
+
+	@Override
+	public List<user_dto> getTopTen() {
+		// TODO Auto-generated method stub
+		List<user_entity> list = user_repos.getTopTen(PageRequest.of(0, 10));
+		return list.stream().map(user_mapper::mapIncompleteToUser_dto).collect(Collectors.toList());
 	}
 }
