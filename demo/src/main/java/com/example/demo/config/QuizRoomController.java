@@ -2,76 +2,60 @@ package com.example.demo.config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import com.example.demo.dto.quizz_dto;
 import com.example.demo.dto.user_dto;
 
-@Controller
+@CrossOrigin("*")
+@RestController
 public class QuizRoomController {
-	private ConcurrentHashMap<Integer, QuizRoom> list = new ConcurrentHashMap<>();
+	@Autowired
+	private Map<String, Integer> roomIdVsPlayerCount = new ConcurrentHashMap<>();
+	@Autowired
+	private SimpMessagingTemplate simpMessagingTemplate;
 	
-	@MessageMapping("/join")
-    @SendTo("/topic/room/{idroom}")
-    public QuizRoom join(@DestinationVariable int idroom, @RequestBody user_dto dto) {
-        // handle joining a room
-		QuizRoom find_room = list.get(idroom);
-		find_room.getPlayers().put(dto, 0);
-        return find_room;
-    }
-	@MessageMapping("/leave")
-    @SendTo("/topic/room/{idroom}")
-    public QuizRoom leave(@DestinationVariable int idroom, @RequestBody user_dto dto) {
-        // handle joining a room
-		QuizRoom find_room = list.get(idroom);
-		find_room.getPlayers().remove(dto);
-        return find_room;
-    }
-	@MessageMapping("/start")
-    @SendTo("/topic/room/{idroom}")
-    public List<quizz_dto> startQuizz(@DestinationVariable int idroom) {
-        // handle joining a room
-    	QuizRoom find_room = list.get(idroom);
+	private static final int MAX_ALLOWED_PLAYERS = 2;
+	
+	@MessageMapping("/room/{idroom}/join")
+	@SendTo("/topic/{idroom}")
+	public void join() {
 		
-        return find_room.getQuestions();
+	}
+	
+    @EventListener
+    public void handleSubscribe(SessionConnectedEvent event) {
+    	StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
+        String destination = accessor.getDestination();
+        String roomId = destination.split("/")[2];
+        if (roomIdVsPlayerCount.getOrDefault(roomId, 0) >= MAX_ALLOWED_PLAYERS) {
+            // Start the game for this room
+            startGame(roomId);
+            return;
+        }
+
+        // If not at maximum, subscribe user and increment player count
+        roomIdVsPlayerCount.put(roomId, roomIdVsPlayerCount.getOrDefault(roomId, 0) + 1);
+        
     }
-    @MessageMapping("/end")
-    @SendTo("/topic/room/{idroom}")
-    public QuizRoom end(@DestinationVariable int idroom) {
-        // handle joining a room
-    	QuizRoom find_room = list.get(idroom);
-		list.remove(idroom);
-        return find_room;
+    
+    private void startGame(String roomId) {
+    
+        simpMessagingTemplate.convertAndSend("/topic/" + roomId, "The game is starting!");
     }
-//    @EventListener
-//    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-//        String username = event.getUser().getName();
-//
-//        // find the room for the user
-//        QuizRoom room = findRoomForUser(username);
-//
-//        if (room != null) {
-//            // find the player for the user
-//            Player player = findPlayerForUser(username);
-//
-//            if (player != null) {
-//                // remove the player from the room
-//                room.removePlayer(player);
-//
-//                // if the room is empty, remove it
-//                if (room.getPlayers().isEmpty()) {
-//                    removeRoom(room);
-//                }
-//            }
-//        }
-//    }
 }

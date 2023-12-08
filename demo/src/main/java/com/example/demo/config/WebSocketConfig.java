@@ -19,8 +19,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
 		// TODO Auto-generated method stub
-		registry.setApplicationDestinationPrefixes("/app");
-		registry.enableSimpleBroker("/topic");
+		registry.setApplicationDestinationPrefixes("/app");//source for message mapping
+		registry.enableSimpleBroker("/topic"); //source for websocket
 	}
 	
 }
