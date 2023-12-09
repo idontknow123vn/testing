@@ -20,7 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
 		// TODO Auto-generated method stub
 		registry.setApplicationDestinationPrefixes("/app");//source for message mapping
-		registry.enableSimpleBroker("/topic"); //source for websocket
+		registry.enableSimpleBroker("/room", "/result"); //source for websocket
 	}
 	
 }
