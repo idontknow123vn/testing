@@ -90,9 +90,12 @@ public class user_service_impl implements user_service {
 		String username = input.get(0);
 		String password = input.get(1);
 		user_entity foundEntity = user_repos.login(username, password);
-		foundEntity.setStatus(true);
-		user_entity loginEntity = user_repos.save(foundEntity);
-		return user_mapper.mapToUser_dto(loginEntity);
+		if(foundEntity != null) {
+			foundEntity.setStatus(true);
+			user_entity loginEntity = user_repos.save(foundEntity);
+			return user_mapper.mapToUser_dto(loginEntity);
+		}
+		else return null;
 	}
 
 	@Override
