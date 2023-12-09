@@ -55,8 +55,20 @@ public class user_controller {
 	}
 	@PutMapping(value = "/login")
 	public ResponseEntity<Object> login(@RequestBody List<String> list){
-		user_dto foundUser = user_service.login(list);
-		return new ResponseEntity<Object>(foundUser, HttpStatus.OK);
+		try {
+	        user_dto foundUser = user_service.login(list);
+
+	        if (foundUser != null) {
+	            // Trả về dữ liệu người dùng khi xác thực thành công
+	            return new ResponseEntity<Object>(foundUser, HttpStatus.OK);
+	        } else {
+	            // Trả về một JSON với giá trị null khi xác thực không thành công
+	            return new ResponseEntity<Object>(null, HttpStatus.NO_CONTENT);
+	        }
+	    } catch (Exception e) {
+	        // Xử lý các trường hợp lỗi và trả về một JSON với giá trị null
+	        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 	@PutMapping(value = "/logout")
 	public ResponseEntity<String> logout(@RequestBody user_dto dto){
