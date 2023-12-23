@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -30,7 +31,7 @@ import com.example.demo.dto.quizz_dto;
 import com.example.demo.dto.user_dto;
 import com.example.demo.service.quizz_service;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
 public class QuizRoomController {
 
@@ -40,16 +41,14 @@ public class QuizRoomController {
 	@Autowired
 	private quizz_service service;
 	
-	@MessageMapping("/app/{idroom}/submit")
-	public void submit(SimpMessageHeaderAccessor accessor) {
-		
-	}
-	
 	@PostMapping("/createRoom")
 	public ResponseEntity<Object> createRoom(@RequestBody QuizRoom room) {
 		String _room = room.getName();
-		roomIdVsPlayerCount.put(_room, room);
-		return new ResponseEntity<Object>(roomIdVsPlayerCount, HttpStatus.OK);
+		if (!roomIdVsPlayerCount.containsKey(_room)) roomIdVsPlayerCount.put(_room, room);
+		else {
+			return new ResponseEntity<>("Phòng bạn nhập đã tồn tại", HttpStatus.ALREADY_REPORTED);
+		}
+		return new ResponseEntity<Object>(room, HttpStatus.OK);
 	}
 	
 	@GetMapping("/rooms")
@@ -61,26 +60,71 @@ public class QuizRoomController {
 		return new ResponseEntity<Object>(filtered, HttpStatus.OK);
 	}
 	
-    @EventListener
-    public void handleSubscribe(SessionSubscribeEvent event) {
-    	StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
-        String destination = accessor.getDestination();
-        String roomId = destination.split("/")[2];
-        if (roomIdVsPlayerCount.getOrDefault(roomId, null).getPlayersPoints().size() 
-        		>= roomIdVsPlayerCount.getOrDefault(roomId, null).getNumber()) {
-            // Start the game for this room
-            startGame(roomId);
-            return;
-        }
-
-        // If not at maximum, subscribe user and increment player count
-//        roomIdVsPlayerCount.getOrDefault(roomId, null).getPlayersPoints().put(user, 0.0);
-        
-        simpMessagingTemplate.convertAndSend("/topic/" + roomId, "user connected!");
-    }
+	@MessageMapping("/{nameroom}/join")
+	public void joinRoom(@DestinationVariable String nameroom,
+			@Payload String user, SimpMessageHeaderAccessor headerAccessor){
+		headerAccessor.getSessionAttributes().put("nameroom", nameroom);
+		headerAccessor.getSessionAttributes().put("user", user);
+		QuizRoom room = roomIdVsPlayerCount.getOrDefault(nameroom, null);
+		room.addUser(user);
+		simpMessagingTemplate.convertAndSend("/room/" + nameroom, room);
+	}
+	
+	@MessageMapping("/{nameroom}/submitpoint")
+	public void submitPoint(@DestinationVariable String nameroom, SubmitInfo info){
+		QuizRoom room = roomIdVsPlayerCount.getOrDefault(nameroom, null);
+		room.getPlayersPoints().put(info.name, info.points);
+		room.setNumberSubmitted(room.getNumberSubmitted() + 1);
+		if (room.getNumberSubmitted() == room.getNumber()) {
+			simpMessagingTemplate.convertAndSend("/result/" + nameroom, room.getPlayersPoints());
+		}
+	}
+	
+	@MessageMapping("/{nameroom}/leave")
+	public void leaveRoom(@DestinationVariable String nameroom, String user){
+		QuizRoom room = roomIdVsPlayerCount.getOrDefault(nameroom, null);
+		room.getPlayersPoints().remove(user);
+	}
+	
+	@SendTo("/rooms/{nameroom}")
+	public List<String> sendListPlayer(@DestinationVariable String nameroom){
+		QuizRoom room = roomIdVsPlayerCount.getOrDefault(nameroom, null);
+		List<String> userList = new ArrayList<>(room.getPlayersPoints().keySet());
+		return userList;
+	}
+	
+	@SendTo("/questions/{nameroom}")
+	public List<quizz_dto> generateQuizz(@DestinationVariable String nameroom){
+		return service.generateQuizz();
+	}
+	
+	@SendTo("/result/{nameroom}")
+	public Map<String, Double> getListResult(@DestinationVariable String nameroom){
+		QuizRoom room = roomIdVsPlayerCount.getOrDefault(nameroom, null);
+		return room.getPlayersPoints();
+	}
+	
+//    @EventListener
+//    public void handleSubscribe(SessionSubscribeEvent event) {
+//    	StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
+//        String destination = accessor.getDestination();
+//        String roomId = destination.split("/")[2];
+//        if (roomIdVsPlayerCount.getOrDefault(roomId, null).getPlayersPoints().size() 
+//        		>= roomIdVsPlayerCount.getOrDefault(roomId, null).getNumber()) {
+//            // Start the game for this room
+//            startGame(roomId);
+//            return;
+//        }
+//        
+//        simpMessagingTemplate.convertAndSend("/room/" + roomId, "user connected!");
+//    }
     
-    private void startGame(String roomId) {
- 
-        simpMessagingTemplate.convertAndSend("/topic/" + roomId, service.generateQuizz());
-    }
+//    private void startGame(String roomId) {
+// 
+//        simpMessagingTemplate.convertAndSend("/questions/" + roomId, service.generateQuizz());
+//    }
+//    
+//    private void sendResult(String roomId) {
+//    	simpMessagingTemplate.convertAndSend("/result/" + roomId, "result sent");
+//    }
 }

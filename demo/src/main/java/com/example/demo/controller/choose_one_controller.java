@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import com.example.demo.dto.choose_one_dto;
 import com.example.demo.service.choose_one_service;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5500")
 @RequestMapping("api/quizz/choose-one")
 public class choose_one_controller {
 	@Autowired
