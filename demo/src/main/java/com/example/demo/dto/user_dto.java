@@ -13,9 +13,10 @@ public class user_dto {
 	private boolean gender;
 	private Date dateCreated;
 	private boolean status;
+	private boolean role;
 	private normal_entity normal_statistic;
 	private rank_entity rank_statistic;
-	public user_dto(long iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status) {
+	public user_dto(long iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status, boolean role) {
 		super();
 		this.iduser = iduser;
 		this.password = password;
@@ -24,9 +25,10 @@ public class user_dto {
 		this.gender = gender;
 		this.dateCreated = dateCreated;
 		this.status = status;
+		this.role = role;
 	}
 	
-	public user_dto(long iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status,
+	public user_dto(long iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status, boolean role,
 			normal_entity normal_statistic, rank_entity rank_statistic) {
 		super();
 		this.iduser = iduser;
@@ -36,6 +38,7 @@ public class user_dto {
 		this.gender = gender;
 		this.dateCreated = dateCreated;
 		this.status = status;
+		this.role = role;
 		this.normal_statistic = normal_statistic;
 		this.rank_statistic = rank_statistic;
 	}
@@ -103,6 +106,14 @@ public class user_dto {
 	}
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+
+	public boolean isRole() {
+		return role;
+	}
+
+	public void setRole(boolean role) {
+		this.role = role;
 	}
 	
 }

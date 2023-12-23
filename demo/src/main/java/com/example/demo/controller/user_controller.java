@@ -21,7 +21,7 @@ import com.example.demo.service.user_service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping(value = "/api/user")
 public class user_controller {
 	@Autowired

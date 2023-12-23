@@ -15,6 +15,7 @@ public class user_mapper {
 					user_entity.isGender(), 
 					user_entity.getDateCreated(), 
 					user_entity.isStatus(),
+					user_entity.isRole(),
 					user_entity.getNormal_statistic(),
 					user_entity.getRank_statistic()
 			);
@@ -37,7 +38,8 @@ public class user_mapper {
 				user_dto.getUsername(),
 				user_dto.isGender(),
 				user_dto.getDateCreated(),
-				user_dto.isStatus()
+				user_dto.isStatus(),
+				user_dto.isRole()
 		);
 		return user_entity;
 	}

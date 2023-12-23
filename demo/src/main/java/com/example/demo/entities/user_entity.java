@@ -39,6 +39,8 @@ public class user_entity {
 	private Date dateCreated;
 	@Column(name = "status")
 	private boolean status;
+	@Column(name = "role")
+	private boolean role;
 	
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
@@ -54,7 +56,7 @@ public class user_entity {
 		
 	}
 	
-	public user_entity(long iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status) {
+	public user_entity(long iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status, boolean role) {
 		super();
 		this.iduser = iduser;
 		this.password = password;
@@ -63,9 +65,10 @@ public class user_entity {
 		this.gender = gender;
 		this.dateCreated = dateCreated;
 		this.status = status;
+		this.role = role;
 	}
 
-	public user_entity(long iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status,
+	public user_entity(long iduser, String password, String name, String username, boolean gender, Date dateCreated, boolean status, boolean role,
 			com.example.demo.entities.normal_entity normal_statistic,
 			com.example.demo.entities.rank_entity rank_statistic) {
 		super();
@@ -76,6 +79,7 @@ public class user_entity {
 		this.gender = gender;
 		this.dateCreated = dateCreated;
 		this.status = status;
+		this.role = role;
 		this.normal_statistic = normal_statistic;
 		this.rank_statistic = rank_statistic;
 	}
@@ -135,6 +139,14 @@ public class user_entity {
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+	
+	public boolean isRole() {
+		return role;
+	}
+
+	public void setRole(boolean role) {
+		this.role = role;
 	}
 
 	public normal_entity getNormal_statistic() {
