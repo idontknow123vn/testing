@@ -50,5 +50,10 @@ public class QuizRoom {
 	public void setHost(String host) {
 		this.host = host;
 	}
-	
+	public void addUser(String user) {
+		this.playersPoints.put(user, 0.0);
+	}
+	public void removeUser(String user) {
+		if(this.playersPoints.containsKey(user)) this.playersPoints.remove(user);
+	}
 }

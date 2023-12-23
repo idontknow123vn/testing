@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -42,8 +43,11 @@ public class QuizRoomController {
 	
 	@PostMapping("/createRoom")
 	public ResponseEntity<Object> createRoom(@RequestBody QuizRoom room) {
-		String _host = room.getHost();
-		roomIdVsPlayerCount.put(_host, room);
+		String _room = room.getName();
+		if (!roomIdVsPlayerCount.containsKey(_room)) roomIdVsPlayerCount.put(_room, room);
+		else {
+			return new ResponseEntity<>("Phòng bạn nhập đã tồn tại", HttpStatus.ALREADY_REPORTED);
+		}
 		return new ResponseEntity<Object>(room, HttpStatus.OK);
 	}
 	
@@ -58,11 +62,11 @@ public class QuizRoomController {
 	
 	@MessageMapping("/{nameroom}/join")
 	public void joinRoom(@DestinationVariable String nameroom,
-			String user, SimpMessageHeaderAccessor headerAccessor){
+			@Payload String user, SimpMessageHeaderAccessor headerAccessor){
 		headerAccessor.getSessionAttributes().put("nameroom", nameroom);
 		headerAccessor.getSessionAttributes().put("user", user);
 		QuizRoom room = roomIdVsPlayerCount.getOrDefault(nameroom, null);
-		room.getPlayersPoints().put(user, 0.0);
+		room.addUser(user);
 		simpMessagingTemplate.convertAndSend("/room/" + nameroom, room);
 	}
 	

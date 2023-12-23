@@ -67,7 +67,7 @@ public class user_controller {
 	        }
 	    } catch (Exception e) {
 	        // Xử lý các trường hợp lỗi và trả về một JSON với giá trị null
-	        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	        return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
 	@PutMapping(value = "/logout")
