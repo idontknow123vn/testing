@@ -63,7 +63,7 @@ public class user_controller {
 	            return new ResponseEntity<Object>(foundUser, HttpStatus.OK);
 	        } else {
 	            // Trả về một JSON với giá trị null khi xác thực không thành công
-	            return new ResponseEntity<Object>(null, HttpStatus.NO_CONTENT);
+	            return new ResponseEntity<Object>("Sai tài khoản hoặc mật khẩu", HttpStatus.NO_CONTENT);
 	        }
 	    } catch(SecurityException e) {
 	    	return new ResponseEntity<>("Tài khoản đăng nhập ở 1 nơi khác", HttpStatus.NOT_ACCEPTABLE);
@@ -75,8 +75,8 @@ public class user_controller {
 	}
 	@PutMapping(value = "/logout")
 	public ResponseEntity<String> logout(@RequestBody user_dto dto){
-		user_service.logout(dto);
-		return new ResponseEntity<String>("User successfully deleted", HttpStatus.OK);
+		user_service.updateUser(dto);
+		return new ResponseEntity<String>("User successfully logged out", HttpStatus.OK);
 	}
 	@PutMapping(value = "/rank")
 	public ResponseEntity<Object> getTop10(){

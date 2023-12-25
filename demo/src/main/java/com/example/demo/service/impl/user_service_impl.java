@@ -72,6 +72,7 @@ public class user_service_impl implements user_service {
 		existing_user.setName(user.getName());
 		existing_user.setGender(user.isGender());
 		existing_user.setPassword(user.getPassword());
+		existing_user.setStatus(user.isStatus());
 		user_entity update_user = user_repos.save(existing_user);
 		return user_mapper.mapToUser_dto(update_user);
 	}
