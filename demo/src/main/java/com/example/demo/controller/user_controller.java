@@ -65,7 +65,10 @@ public class user_controller {
 	            // Trả về một JSON với giá trị null khi xác thực không thành công
 	            return new ResponseEntity<Object>(null, HttpStatus.NO_CONTENT);
 	        }
-	    } catch (Exception e) {
+	    } catch(SecurityException e) {
+	    	return new ResponseEntity<>("Tài khoản đăng nhập ở 1 nơi khác", HttpStatus.NOT_ACCEPTABLE);
+	    } 
+		catch (Exception e) {
 	        // Xử lý các trường hợp lỗi và trả về một JSON với giá trị null
 	        return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 	    }

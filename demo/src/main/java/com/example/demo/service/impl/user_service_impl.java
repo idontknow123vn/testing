@@ -85,12 +85,13 @@ public class user_service_impl implements user_service {
 	}
 
 	@Override
-	public user_dto login(List<String> input) {
+	public user_dto login(List<String> input) throws SecurityException {
 		// TODO Auto-generated method stub
 		String username = input.get(0);
 		String password = input.get(1);
 		user_entity foundEntity = user_repos.login(username, password);
 		if(foundEntity != null) {
+			if(foundEntity.isStatus()) throw new SecurityException();
 			foundEntity.setStatus(true);
 			user_entity loginEntity = user_repos.save(foundEntity);
 			return user_mapper.mapToUser_dto(loginEntity);

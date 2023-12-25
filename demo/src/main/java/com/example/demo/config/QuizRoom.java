@@ -56,4 +56,9 @@ public class QuizRoom {
 	public void removeUser(String user) {
 		if(this.playersPoints.containsKey(user)) this.playersPoints.remove(user);
 	}
+	public void changeHost() {
+		if (playersPoints != null && !playersPoints.isEmpty()) {
+            this.host = playersPoints.keySet().iterator().next();
+        }
+	}
 }

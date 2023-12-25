@@ -3,6 +3,7 @@ package com.example.demo.config;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -62,16 +63,25 @@ public class QuizRoomController {
 	
 	@MessageMapping("/{nameroom}/join")
 	public void joinRoom(@DestinationVariable String nameroom,
-			@Payload String user, SimpMessageHeaderAccessor headerAccessor){
-		headerAccessor.getSessionAttributes().put("nameroom", nameroom);
+			@Payload String user, SimpMessageHeaderAccessor headerAccessor) throws InterruptedException{
+		String currentNameroom = (String)headerAccessor.getSessionAttributes().put("nameroom", nameroom);
+		if(currentNameroom != null) {
+			QuizRoom room = roomIdVsPlayerCount.getOrDefault(currentNameroom, null);
+			room.removeUser(user);
+			simpMessagingTemplate.convertAndSend("/room/"+ currentNameroom, room);
+		}
 		headerAccessor.getSessionAttributes().put("user", user);
 		QuizRoom room = roomIdVsPlayerCount.getOrDefault(nameroom, null);
 		room.addUser(user);
 		simpMessagingTemplate.convertAndSend("/room/" + nameroom, room);
+		if(room.getPlayersPoints().size() == room.getNumber()) {
+			Thread.sleep(5000);
+			simpMessagingTemplate.convertAndSend("/question/" + nameroom, service.generateQuizz());
+		}
 	}
 	
 	@MessageMapping("/{nameroom}/submitpoint")
-	public void submitPoint(@DestinationVariable String nameroom, SubmitInfo info){
+	public void submitPoint(@DestinationVariable String nameroom, @Payload SubmitInfo info){
 		QuizRoom room = roomIdVsPlayerCount.getOrDefault(nameroom, null);
 		room.getPlayersPoints().put(info.name, info.points);
 		room.setNumberSubmitted(room.getNumberSubmitted() + 1);
@@ -79,6 +89,22 @@ public class QuizRoomController {
 			simpMessagingTemplate.convertAndSend("/result/" + nameroom, room.getPlayersPoints());
 		}
 	}
+	@EventListener
+	public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
+	    StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
+
+	    String username = (String) headerAccessor.getSessionAttributes().get("user");
+	    String roomId = (String) headerAccessor.getSessionAttributes().get("nameroom");
+	    if (username != null) {
+	    	QuizRoom room = roomIdVsPlayerCount.getOrDefault(roomId, null);
+	    	room.removeUser(username);
+	    	if(!room.getPlayersPoints().isEmpty()) {
+	    		room.changeHost();
+	    		simpMessagingTemplate.convertAndSend("/room/" + roomId, room);
+	    	}
+	    	else roomIdVsPlayerCount.remove(roomId);
+	    }
+	  }
 	
 	@MessageMapping("/{nameroom}/leave")
 	public void leaveRoom(@DestinationVariable String nameroom, String user){
@@ -103,28 +129,5 @@ public class QuizRoomController {
 		QuizRoom room = roomIdVsPlayerCount.getOrDefault(nameroom, null);
 		return room.getPlayersPoints();
 	}
-	
-//    @EventListener
-//    public void handleSubscribe(SessionSubscribeEvent event) {
-//    	StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
-//        String destination = accessor.getDestination();
-//        String roomId = destination.split("/")[2];
-//        if (roomIdVsPlayerCount.getOrDefault(roomId, null).getPlayersPoints().size() 
-//        		>= roomIdVsPlayerCount.getOrDefault(roomId, null).getNumber()) {
-//            // Start the game for this room
-//            startGame(roomId);
-//            return;
-//        }
-//        
-//        simpMessagingTemplate.convertAndSend("/room/" + roomId, "user connected!");
-//    }
     
-//    private void startGame(String roomId) {
-// 
-//        simpMessagingTemplate.convertAndSend("/questions/" + roomId, service.generateQuizz());
-//    }
-//    
-//    private void sendResult(String roomId) {
-//    	simpMessagingTemplate.convertAndSend("/result/" + roomId, "result sent");
-//    }
 }
