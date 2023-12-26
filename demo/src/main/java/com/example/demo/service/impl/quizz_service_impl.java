@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.choose_one_dto;
 import com.example.demo.dto.quizz_dto;
+import com.example.demo.entities.choose_many_entity;
 import com.example.demo.entities.choose_one_entity;
 import com.example.demo.entities.quizz_entity;
+import com.example.demo.entities.writing_entity;
 import com.example.demo.mappers.choose_one_mapper;
 import com.example.demo.mappers.quizz_mapper;
 import com.example.demo.repository.choose_many_repos;
@@ -35,13 +38,29 @@ public class quizz_service_impl implements quizz_service {
 	@Override
 	public quizz_dto createQuizz(quizz_dto dto) {
 		// TODO Auto-generated method stub
-		quizz_entity entity = quizz_mapper.mapToQuizz_entity(dto);
-		choose_one_entity one = choose_one_mapper.mapToChoose_one_entity(new choose_one_dto());
-		entity.setChoose_one(one);
-		one.setQuizz(entity);
+		quizz_entity entity = quizz_mapper.mapToQuizz_entityFull(dto);
+		if(entity.getChoose_one() == null) {
+			choose_one_entity one = choose_one_mapper.mapToChoose_one_entity(new choose_one_dto());
+			entity.setChoose_one(one);
+			one.setQuizz(entity);
+		}
 		quizz_entity createdEntity = quizz_repos.save(entity);
-		
-		return quizz_mapper.mapToQuizz_dto(createdEntity);
+		Collection<writing_entity> dto_writing = dto.getWriting();
+		if(dto_writing != null) {
+			for (writing_entity i : dto_writing) {
+				i.setIdquizz(createdEntity.getIdquizz());
+			}
+			createdEntity.setWriting(dto_writing);
+		}
+		Collection<choose_many_entity> dto_choose_many = dto.getChoose_many();
+		if(dto_choose_many != null) {
+			for (choose_many_entity i : dto_choose_many) {
+				i.setIdquizz(createdEntity.getIdquizz());
+			}
+			createdEntity.setChoose_many(dto_choose_many);
+		}
+		quizz_entity completedEntity = quizz_repos.save(createdEntity);
+		return quizz_mapper.mapToQuizz_dto(completedEntity);
 	}
 
 	@Override
