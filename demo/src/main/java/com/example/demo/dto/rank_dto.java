@@ -32,7 +32,7 @@ public class rank_dto {
 		this.gameWon = gameWon;
 	}
 	public rank_dto() {
-		
+		this.rank = "Không";
 	}
 	public long getIduser() {
 		return iduser;

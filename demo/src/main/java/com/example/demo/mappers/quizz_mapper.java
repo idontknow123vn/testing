@@ -46,4 +46,20 @@ public class quizz_mapper {
 		else dto.setChoose_many(entity.getChoose_many());
 		return dto;
 	}
+	public static quizz_entity mapToQuizz_entityFull(quizz_dto dto) {
+		quizz_entity entity = new quizz_entity(
+				dto.getIdquizz(), 
+				dto.getQuizz_info(), 
+				dto.getPicture(), 
+				dto.getSubject(), 
+				dto.getDifficulty(), 
+				dto.getTimeAnswered(),
+				dto.getChoose_one(),
+				null,
+				null
+		);
+		entity.getChoose_one().setQuizz(entity);
+		
+		return entity;
+	}
 }

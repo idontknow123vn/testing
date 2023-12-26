@@ -13,4 +13,23 @@ public interface quizz_repos extends JpaRepository<quizz_entity, Long> {
 			+ "FROM quizz_entity AS entity "
 			+ "ORDER BY function('RAND')")
 	List<quizz_entity> generateQuiz(Pageable pageable);
+	
+	@Query("SELECT entity "
+			+ "FROM quizz_entity AS entity "
+			+ "WHERE entity.subject=:subject "
+			+ "ORDER BY function('RAND')")
+	List<quizz_entity> generateQuiz(Pageable pageable, String subject);
+	
+	@Query("SELECT entity "
+			+ "FROM quizz_entity AS entity "
+			+ "WHERE entity.subject=:subject AND entity.difficulty=:difficulty "
+			+ "ORDER BY function('RAND')")
+	List<quizz_entity> generateQuiz(Pageable pageable, String subject, int difficulty);
+	
+	@Query("SELECT entity "
+			+ "FROM quizz_entity AS entity "
+			+ "WHERE entity.difficulty=:difficulty "
+			+ "ORDER BY function('RAND')")
+	List<quizz_entity> generateQuiz(Pageable pageable, int difficulty);
+	
 }
