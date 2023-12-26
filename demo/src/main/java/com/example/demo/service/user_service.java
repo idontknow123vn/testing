@@ -11,7 +11,7 @@ public interface user_service {
 	List<user_dto> getTopTen();
 	user_dto updateUser(user_dto user);
 	void deleteUser(long iduser);
-	user_dto login(List<String> input);
+	user_dto login(List<String> input) throws SecurityException;
 	void logout(user_dto dto);
 	Integer reset_password(String gmail);
 	void update_password(List<String> list);

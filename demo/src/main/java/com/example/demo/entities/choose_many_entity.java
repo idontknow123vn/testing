@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 @Table(name = "choose_many")
 public class choose_many_entity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "idanswer")
 	private long idanswer;
 	@Column(name = "answer")
