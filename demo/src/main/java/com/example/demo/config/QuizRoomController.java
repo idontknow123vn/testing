@@ -75,8 +75,8 @@ public class QuizRoomController {
 		room.addUser(user);
 		simpMessagingTemplate.convertAndSend("/room/" + nameroom, room);
 		if(room.getPlayersPoints().size() == room.getNumber()) {
-			Thread.sleep(5000);
-			simpMessagingTemplate.convertAndSend("/questions/" + nameroom, service.generateQuizz());
+//			Thread.sleep(5000);
+			simpMessagingTemplate.convertAndSend("/questions/" + currentNameroom, service.generateQuizz());
 		}
 	}
 	
