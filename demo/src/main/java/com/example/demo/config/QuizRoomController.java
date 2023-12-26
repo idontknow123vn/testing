@@ -75,8 +75,8 @@ public class QuizRoomController {
 		room.addUser(user);
 		simpMessagingTemplate.convertAndSend("/room/" + nameroom, room);
 		if(room.getPlayersPoints().size() == room.getNumber()) {
-			Thread.sleep(5000);
-			simpMessagingTemplate.convertAndSend("/question/" + nameroom, service.generateQuizz());
+//			Thread.sleep(5000);
+			simpMessagingTemplate.convertAndSend("/questions/" + nameroom, service.generateQuizz());
 		}
 	}
 	
@@ -97,7 +97,7 @@ public class QuizRoomController {
 	    String roomId = (String) headerAccessor.getSessionAttributes().get("nameroom");
 	    if (username != null) {
 	    	QuizRoom room = roomIdVsPlayerCount.getOrDefault(roomId, null);
-	    	room.removeUser(username);
+	    	if(room != null) room.removeUser(username);
 	    	if(!room.getPlayersPoints().isEmpty()) {
 	    		room.changeHost();
 	    		simpMessagingTemplate.convertAndSend("/room/" + roomId, room);

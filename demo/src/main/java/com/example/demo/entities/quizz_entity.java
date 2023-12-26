@@ -39,11 +39,11 @@ public class quizz_entity {
 	@JsonManagedReference
 	private choose_one_entity choose_one;
 	
-	@OneToMany(mappedBy = "quizz", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "quizz", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private Collection<writing_entity> writing;
 	
-	@OneToMany(mappedBy = "quizz", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "quizz", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private Collection<choose_many_entity> choose_many;
 
