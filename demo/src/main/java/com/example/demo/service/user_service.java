@@ -13,4 +13,7 @@ public interface user_service {
 	void deleteUser(long iduser);
 	user_dto login(List<String> input) throws SecurityException;
 	void logout(user_dto dto);
+	Integer reset_password(String gmail);
+	void update_password(List<String> list);
+	Integer cofirm_gmail(String gmail);
 }
