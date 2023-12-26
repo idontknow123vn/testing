@@ -1,20 +1,28 @@
 package com.example.demo.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.DataMailDTO;
 import com.example.demo.dto.normal_dto;
 import com.example.demo.dto.rank_dto;
 import com.example.demo.dto.user_dto;
 import com.example.demo.repository.normal_repos;
 import com.example.demo.repository.rank_repos;
 import com.example.demo.repository.user_repos;
+import com.example.demo.service.MailService;
 import com.example.demo.service.user_service;
+
+import jakarta.mail.MessagingException;
 
 import com.example.demo.entities.normal_entity;
 import com.example.demo.entities.rank_entity;
@@ -90,12 +98,9 @@ public class user_service_impl implements user_service {
 		String username = input.get(0);
 		String password = input.get(1);
 		user_entity foundEntity = user_repos.login(username, password);
-		if(foundEntity != null) {
-			foundEntity.setStatus(true);
-			user_entity loginEntity = user_repos.save(foundEntity);
-			return user_mapper.mapToUser_dto(loginEntity);
-		}
-		else return null;
+		foundEntity.setStatus(true);
+		user_entity loginEntity = user_repos.save(foundEntity);
+		return user_mapper.mapToUser_dto(loginEntity);
 	}
 
 	@Override
@@ -112,4 +117,63 @@ public class user_service_impl implements user_service {
 		List<user_entity> list = user_repos.getTopTen(PageRequest.of(0, 10));
 		return list.stream().map(user_mapper::mapIncompleteToUser_dto).collect(Collectors.toList());
 	}
+	@Autowired
+    private MailService mailService;
+	@Override
+	public Integer reset_password(String gmail) {
+		System.out.print(gmail.replaceAll("[\\[\\]\"]", ""));
+		boolean usernameExists = user_repos.existsByUsername(gmail.replaceAll("[\\[\\]\"]", ""));
+		System.out.print(usernameExists);
+        if (usernameExists) {
+        	try {
+	            DataMailDTO dataMail = new DataMailDTO();
+	            
+	            dataMail.setTo(gmail.replaceAll("[\\[\\]\"]", ""));
+	            dataMail.setSubject("Reset Password");
+
+	            Map<String, Object> props = new HashMap<>();
+	            Random random = new Random();
+	            // Tạo số ngẫu nhiên từ 100000 đến 999999
+	            int randomNumber = random.nextInt(900000) + 100000;
+	            props.put("token", randomNumber);
+	            dataMail.setProps(props);
+	            mailService.sendHtmlMail(dataMail,"content_mail" );
+	            return randomNumber;
+	        } catch (MessagingException exp){
+	            exp.printStackTrace();
+	        }
+        } 
+		return 0;
+	}
+
+	@Override
+	public void update_password(List<String> list) {
+		String username = list.get(0);
+		String password = list.get(1);
+		user_repos.updatePassword(username,password);
+	}
+
+	@Override
+	public Integer cofirm_gmail(String gmail) {
+		try {
+            DataMailDTO dataMail = new DataMailDTO();
+            
+            dataMail.setTo(gmail.replaceAll("[\\[\\]\"]", ""));
+            dataMail.setSubject("Cofirm Gmail");
+
+            Map<String, Object> props = new HashMap<>();
+            Random random = new Random();
+            // Tạo số ngẫu nhiên từ 100000 đến 999999
+            int randomNumber = random.nextInt(900000) + 100000;
+            props.put("token", randomNumber);
+            dataMail.setProps(props);
+            mailService.sendHtmlMail(dataMail,"content_mail" );
+            return randomNumber;
+        } catch (MessagingException exp){
+            exp.printStackTrace();
+        }
+	return 0;
+	}
+
+	
 }

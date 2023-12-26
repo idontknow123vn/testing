@@ -80,4 +80,18 @@ public class user_controller {
 		List<user_dto> list = user_service.getTopTen();
 		return new ResponseEntity<Object>(list, HttpStatus.OK);
 	}
+	@PutMapping(value = "/reset_password")
+    public ResponseEntity<Integer> reset_password(@RequestBody String gmail) {
+        return ResponseEntity.ok(user_service.reset_password(gmail));
+    }
+	@PutMapping(value = "/cofirm_gmail")
+    public ResponseEntity<Integer> cofirm_gmail(@RequestBody String gmail) {
+        return ResponseEntity.ok(user_service.cofirm_gmail(gmail));
+    }
+	@PutMapping(value = "/update_password")
+	public void update_password(@RequestBody List<String> list ) {
+		System.out.println("Vô");
+	    user_service.update_password(list);
+	    // Không cần trả về gì từ controller nếu không muốn
+	}
 }
