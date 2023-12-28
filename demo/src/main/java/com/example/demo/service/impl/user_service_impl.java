@@ -52,6 +52,7 @@ public class user_service_impl implements user_service {
 		user_entity.setRank_statistic(rank);
 		normal.setUser(user_entity);
 		rank.setUser(user_entity);
+		user_entity.setPassword(null);
 		user_entity saved_user = user_repos.save(user_entity);
 		user_dto saved_user_dto = user_mapper.mapToUser_dto(saved_user);
 		return saved_user_dto;

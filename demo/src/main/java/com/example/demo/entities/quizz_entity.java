@@ -27,7 +27,7 @@ public class quizz_entity {
 	@Column(name = "quizz_info")
 	private String quizz_info;
 	@Lob
-	@Column(name = "picture")
+	@Column(name = "picture", columnDefinition = "LONGBLOB")
 	private byte[] picture;
 	@Column(name = "subject")
 	private String subject;
