@@ -40,31 +40,31 @@ public class quizz_mapper {
 				entity.getSubject(),
 				entity.getDifficulty(),
 				entity.getTimeAnswered());
-		if(entity.getChoose_many() != null && entity.getWriting() != null && entity.getChoose_one() != null) {
+		if(entity.getChoose_many().size() != 0 && entity.getWriting().size() != 0 && entity.getChoose_one() != null) {
 			int num = rand.nextInt(3);
 			if(num == 0) dto.setChoose_one(entity.getChoose_one());
 			else if(num == 1) dto.setWriting(entity.getWriting());
 			else dto.setChoose_many(entity.getChoose_many());
 		}
-		else if(entity.getChoose_many() == null && entity.getWriting() != null && entity.getChoose_one() != null) {
+		else if(entity.getChoose_many().size() == 0 && entity.getWriting().size() != 0 && entity.getChoose_one() != null) {
 			int num = rand.nextInt(2);
 			if(num == 0) dto.setChoose_one(entity.getChoose_one());
-			else if(num == 1) dto.setWriting(entity.getWriting());
+			else dto.setWriting(entity.getWriting());
 		}
-		else if (entity.getChoose_one() == null && entity.getChoose_many() != null && entity.getWriting() != null) {
+		else if (entity.getChoose_one() == null && entity.getChoose_many().size() != 0 && entity.getWriting().size() != 0) {
 			int num = rand.nextInt(2);
 			if(num == 0) dto.setChoose_many(entity.getChoose_many());
-			else if(num == 1) dto.setWriting(entity.getWriting());
+			else dto.setWriting(entity.getWriting());
 		}
-		else if (entity.getChoose_many() != null && entity.getWriting() == null && entity.getChoose_one() != null) {
+		else if (entity.getChoose_many().size() != 0 && entity.getWriting().size() == 0 && entity.getChoose_one() != null) {
 			int num = rand.nextInt(2);
 			if(num == 0) dto.setChoose_one(entity.getChoose_one());
-			else if(num == 1) dto.setChoose_many(entity.getChoose_many());
+			else dto.setChoose_many(entity.getChoose_many());
 		}
 		else {
-			dto.setChoose_one(entity.getChoose_one());
-			dto.setWriting(entity.getWriting());
-			dto.setChoose_many(entity.getChoose_many());
+			if(entity.getChoose_one() != null) dto.setChoose_one(entity.getChoose_one());
+			else if(entity.getChoose_many().size() != 0)dto.setWriting(entity.getWriting());
+			else if(entity.getWriting().size() != 0)dto.setChoose_many(entity.getChoose_many());
 		}
 		return dto;
 	}
