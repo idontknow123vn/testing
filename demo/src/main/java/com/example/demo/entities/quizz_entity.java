@@ -11,6 +11,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -25,6 +26,7 @@ public class quizz_entity {
 	private long idquizz;
 	@Column(name = "quizz_info")
 	private String quizz_info;
+	@Lob
 	@Column(name = "picture")
 	private byte[] picture;
 	@Column(name = "subject")
