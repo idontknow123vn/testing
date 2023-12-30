@@ -20,6 +20,7 @@ import com.example.demo.repository.normal_repos;
 import com.example.demo.repository.rank_repos;
 import com.example.demo.repository.user_repos;
 import com.example.demo.service.MailService;
+import com.example.demo.service.passwordEncoder_service;
 import com.example.demo.service.user_service;
 
 import jakarta.mail.MessagingException;
@@ -48,12 +49,13 @@ public class user_service_impl implements user_service {
 		user_entity user_entity = user_mapper.mapToUser_entity(user_dto);
 		normal_entity normal = normal_mapper.mapToNormal_entity(new normal_dto());
 		rank_entity rank = rank_mapper.mapToRank_entity(new rank_dto());
+		user_entity.setPassword(passwordEncoder_service.encodePassword(user_dto.getPassword()));
 		user_entity.setNormal_statistic(normal);
 		user_entity.setRank_statistic(rank);
 		normal.setUser(user_entity);
 		rank.setUser(user_entity);
-		user_entity.setPassword(null);
 		user_entity saved_user = user_repos.save(user_entity);
+		saved_user.setPassword(user_dto.getPassword());
 		user_dto saved_user_dto = user_mapper.mapToUser_dto(saved_user);
 		return saved_user_dto;
 		
@@ -80,9 +82,10 @@ public class user_service_impl implements user_service {
 		user_entity existing_user= user_repos.findById(user.getIduser()).get();
 		existing_user.setName(user.getName());
 		existing_user.setGender(user.isGender());
-		existing_user.setPassword(user.getPassword());
+		existing_user.setPassword(passwordEncoder_service.encodePassword(user.getPassword()));
 		existing_user.setStatus(user.isStatus());
 		user_entity update_user = user_repos.save(existing_user);
+		update_user.setPassword(user.getPassword());
 		return user_mapper.mapToUser_dto(update_user);
 	}
 
@@ -98,13 +101,14 @@ public class user_service_impl implements user_service {
 	public user_dto login(List<String> input) throws SecurityException {
 		// TODO Auto-generated method stub
 		String username = input.get(0);
-		String password = input.get(1);
+		String password = passwordEncoder_service.encodePassword(input.get(1));
 		user_entity foundEntity = user_repos.login(username, password);
 
 		if(foundEntity != null) {
 			if(foundEntity.isStatus()) throw new SecurityException();
 			foundEntity.setStatus(true);
 			user_entity loginEntity = user_repos.save(foundEntity);
+			loginEntity.setPassword(input.get(1));
 			return user_mapper.mapToUser_dto(loginEntity);
 		}
 		else return null;

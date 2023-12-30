@@ -17,7 +17,7 @@ import com.example.demo.dto.choose_one_dto;
 import com.example.demo.service.choose_one_service;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5500")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("api/quizz/choose-one")
 public class choose_one_controller {
 	@Autowired

@@ -17,7 +17,7 @@ import com.example.demo.dto.rank_dto;
 import com.example.demo.service.rank_service;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5500")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("api/user/statistic/rank")
 public class rank_controller {
 	@Autowired
