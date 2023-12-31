@@ -80,7 +80,7 @@ public class quizz_mapper {
 				null,
 				null
 		);
-		entity.getChoose_one().setQuizz(entity);
+		if(entity.getChoose_one() != null) entity.getChoose_one().setQuizz(entity);
 		
 		return entity;
 	}
