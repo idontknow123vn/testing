@@ -32,8 +32,8 @@ import com.example.demo.dto.quizz_dto;
 import com.example.demo.dto.user_dto;
 import com.example.demo.service.quizz_service;
 
-@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class QuizRoomController {
 
 	private Map<String, QuizRoom> roomIdVsPlayerCount = new ConcurrentHashMap<>();

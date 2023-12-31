@@ -17,7 +17,7 @@ import com.example.demo.dto.writing_dto;
 import com.example.demo.service.writing_service;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5500")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("api/quizz/writing")
 public class writing_controller {
 	@Autowired
