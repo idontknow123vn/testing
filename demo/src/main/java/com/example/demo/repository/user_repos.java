@@ -29,4 +29,11 @@ public interface user_repos extends JpaRepository<user_entity, Long> {
 	@Query("SELECT COUNT(u) > 0 FROM user_entity u WHERE u.username = :username")
     boolean existsByUsername(String username);
 	
+	@Query("SELECT NEW com.example.demo.entities.user_entity(entity.iduser, entity.password, entity.name, entity.username, entity.gender, entity.dateCreated, entity.status, entity.role, entity.normal_statistic, entity.rank_statistic)"
+			+ "FROM user_entity AS entity WHERE entity.username=:username")
+	user_entity isEmailExist(String username);
+	@Query("SELECT NEW com.example.demo.entities.user_entity(entity.iduser, entity.password, entity.name, entity.username, entity.gender, entity.dateCreated, entity.status, entity.role, entity.normal_statistic, entity.rank_statistic)"
+			+ "FROM user_entity AS entity WHERE entity.name=:name")
+	user_entity isNameExist(String name);
+	
 }

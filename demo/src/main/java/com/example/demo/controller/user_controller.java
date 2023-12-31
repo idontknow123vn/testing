@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import javax.naming.directory.InvalidAttributesException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.user_dto;
 import com.example.demo.service.user_service;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.mail.MessagingException;
 
 @RestController
 @CrossOrigin(origins = "http://127.0.0.1:5500")
@@ -88,8 +92,22 @@ public class user_controller {
         return ResponseEntity.ok(user_service.reset_password(gmail));
     }
 	@PutMapping(value = "/cofirm_gmail")
-    public ResponseEntity<Integer> cofirm_gmail(@RequestBody String gmail) {
-        return ResponseEntity.ok(user_service.cofirm_gmail(gmail));
+    public ResponseEntity<Object> cofirm_gmail(@RequestBody List<String> list) {
+        try {
+        	int token = user_service.cofirm_gmail(list);
+        	return new ResponseEntity<Object>(token, HttpStatus.OK);
+        }
+        catch (InvalidAttributesException e) {
+			// TODO: handle exception
+        	return new ResponseEntity<Object>("Gmail đã tồn tại", HttpStatus.ALREADY_REPORTED);
+        	
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			return new ResponseEntity<Object>("Tên đã tồn tại", HttpStatus.ALREADY_REPORTED);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			return new ResponseEntity<Object>("Gmail không tồn tại", HttpStatus.ALREADY_REPORTED);
+		}
     }
 	@PutMapping(value = "/update_password")
 	public void update_password(@RequestBody List<String> list ) {

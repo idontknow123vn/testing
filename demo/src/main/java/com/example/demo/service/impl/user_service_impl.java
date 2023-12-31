@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import javax.naming.directory.InvalidAttributesException;
+
 import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -165,11 +167,12 @@ public class user_service_impl implements user_service {
 	}
 
 	@Override
-	public Integer cofirm_gmail(String gmail) {
-		try {
+	public Integer cofirm_gmail(List<String> list) throws InvalidAttributesException, IllegalArgumentException, MessagingException {
+			if(user_repos.isEmailExist(list.get(0)) != null) throw new InvalidAttributesException();
+			if(user_repos.isNameExist(list.get(1)) != null) throw new IllegalArgumentException();
             DataMailDTO dataMail = new DataMailDTO();
             
-            dataMail.setTo(gmail.replaceAll("[\\[\\]\"]", ""));
+            dataMail.setTo(list.get(0).replaceAll("[\\[\\]\"]", ""));
             dataMail.setSubject("Cofirm Gmail");
 
             Map<String, Object> props = new HashMap<>();
@@ -180,10 +183,6 @@ public class user_service_impl implements user_service {
             dataMail.setProps(props);
             mailService.sendHtmlMail(dataMail,"content_mail" );
             return randomNumber;
-        } catch (MessagingException exp){
-            exp.printStackTrace();
-        }
-	return 0;
 	}
 
 	
