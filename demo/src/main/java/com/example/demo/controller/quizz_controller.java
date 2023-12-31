@@ -24,7 +24,7 @@ import com.example.demo.service.quizz_service;
 import com.example.demo.service.writing_service;
 
 @RestController
-@CrossOrigin(origins = "http://localhosyt:5500")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("api/quizz")
 public class quizz_controller {
 	@Autowired

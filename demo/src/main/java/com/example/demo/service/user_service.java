@@ -2,7 +2,11 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import javax.naming.directory.InvalidAttributesException;
+
 import com.example.demo.dto.user_dto;
+
+import jakarta.mail.MessagingException;
 
 public interface user_service {
 	user_dto createUser(user_dto user_dto);
@@ -15,5 +19,5 @@ public interface user_service {
 	void logout(user_dto dto);
 	Integer reset_password(String gmail);
 	void update_password(List<String> list);
-	Integer cofirm_gmail(String gmail);
+	Integer cofirm_gmail(List<String> list) throws InvalidAttributesException, IllegalArgumentException,MessagingException;
 }

@@ -12,6 +12,10 @@ public class QuizRoom {
     private int number;
     private int numberSubmitted;
     private String host;
+    public QuizRoom() {
+		// TODO Auto-generated constructor stub
+    	super();
+	}
     public QuizRoom(String name, Map<String, Double> playersPoints, int number, int numberSubmitted, String host) {
 		super();
 		this.name = name;

@@ -17,7 +17,7 @@ import com.example.demo.dto.normal_dto;
 import com.example.demo.service.normal_service;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5500")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("api/user/statistic/normal")
 public class normal_controller {
 	@Autowired

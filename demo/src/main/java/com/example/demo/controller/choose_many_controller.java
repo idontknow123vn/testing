@@ -18,7 +18,7 @@ import com.example.demo.dto.choose_many_dto;
 import com.example.demo.service.choose_many_service;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5500")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("api/quizz/choose-many")
 public class choose_many_controller {
 	@Autowired
