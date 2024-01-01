@@ -81,7 +81,6 @@ public class quizz_mapper {
 				null
 		);
 		if(entity.getChoose_one() != null) entity.getChoose_one().setQuizz(entity);
-		
 		return entity;
 	}
 }

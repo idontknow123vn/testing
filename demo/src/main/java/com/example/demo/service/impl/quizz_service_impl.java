@@ -87,6 +87,23 @@ public class quizz_service_impl implements quizz_service {
 		updateEntity.setDifficulty(dto.getDifficulty());
 		updateEntity.setSubject(dto.getSubject());
 		updateEntity.setTimeAnswered(dto.getTimeAnswered());
+		updateEntity.setChoose_one(dto.getChoose_one());
+		Collection<writing_entity> dto_writing = dto.getWriting();
+		if(dto_writing != null) {
+			for (writing_entity i : dto_writing) {
+				i.setIdquizz(updateEntity.getIdquizz());
+			}
+			updateEntity.setWriting(dto_writing);
+		}
+		else updateEntity.setWriting(null);
+		Collection<choose_many_entity> dto_choose_many = dto.getChoose_many();
+		if(dto_choose_many != null) {
+			for (choose_many_entity i : dto_choose_many) {
+				i.setIdquizz(updateEntity.getIdquizz());
+			}
+			updateEntity.setChoose_many(dto_choose_many);
+		}
+		else updateEntity.setChoose_many(null);
 		quizz_entity returnEntity = quizz_repos.save(updateEntity);
 		return quizz_mapper.mapToQuizz_dto(returnEntity);
 	}
