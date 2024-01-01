@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.choose_many_dto;
 import com.example.demo.dto.quizz_dto;
+import com.example.demo.dto.writing_dto;
+import com.example.demo.entities.writing_entity;
 import com.example.demo.service.choose_many_service;
 import com.example.demo.service.quizz_service;
 import com.example.demo.service.writing_service;
@@ -39,11 +42,21 @@ public class quizz_controller {
 		quizz_dto foundDto = quizz_service.getQuizzById(idquizz);
 		Map<String, Object> map = new LinkedHashMap<>();
 		if(foundDto != null) {
-			Object writing = writing_service.getListAnswerByIdquizz(idquizz);
-			Object many = choose_many_service.getListAnswerByIdquizz(idquizz);
-			map.put("writing", writing);
-			map.put("choose_many", many);
-			BeanUtils.copyProperties(map, foundDto);
+			List<writing_dto> writing = writing_service.getListAnswerByIdquizz(idquizz);
+			List<choose_many_dto> many = choose_many_service.getListAnswerByIdquizz(idquizz);
+			if (writing.isEmpty()) foundDto.setWriting(null);
+			else {
+				map.put("writing", writing);
+				BeanUtils.copyProperties(map, foundDto);
+				map.clear();
+			}
+			if(many.isEmpty()) foundDto.setChoose_many(null);
+			else {
+				 map.put("choose_many", many);
+				 BeanUtils.copyProperties(map, foundDto);
+				 map.clear();
+			}
+			
 		}
 		return new ResponseEntity<Object>(foundDto, HttpStatus.OK);
 	}
