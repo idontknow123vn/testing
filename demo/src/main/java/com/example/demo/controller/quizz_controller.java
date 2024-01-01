@@ -42,7 +42,7 @@ public class quizz_controller {
 			Object writing = writing_service.getListAnswerByIdquizz(idquizz);
 			Object many = choose_many_service.getListAnswerByIdquizz(idquizz);
 			map.put("writing", writing);
-			map.put("many", many);
+			map.put("choose_many", many);
 			BeanUtils.copyProperties(map, foundDto);
 		}
 		return new ResponseEntity<Object>(foundDto, HttpStatus.OK);
