@@ -40,11 +40,11 @@ public class quizz_service_impl implements quizz_service {
 	public quizz_dto createQuizz(quizz_dto dto) {
 		// TODO Auto-generated method stub
 		quizz_entity entity = quizz_mapper.mapToQuizz_entityFull(dto);
-		if(entity.getChoose_one() == null) {
-			choose_one_entity one = choose_one_mapper.mapToChoose_one_entity(new choose_one_dto());
-			entity.setChoose_one(one);
-			one.setQuizz(entity);
-		}
+//		if(entity.getChoose_one() == null) {
+//			choose_one_entity one = choose_one_mapper.mapToChoose_one_entity(new choose_one_dto());
+//			entity.setChoose_one(one);
+//			one.setQuizz(entity);
+//		}
 		quizz_entity createdEntity = quizz_repos.save(entity);
 		Collection<writing_entity> dto_writing = dto.getWriting();
 		if(dto_writing != null) {
