@@ -12,7 +12,7 @@ public class quizz_mapper {
 		quizz_dto dto = new quizz_dto(
 				entity.getIdquizz(), 
 				entity.getQuizz_info(), 
-				Base64.getEncoder().encodeToString(entity.getPicture()), 
+				(entity.getPicture() == null) ? null : Base64.getEncoder().encodeToString(entity.getPicture()), 
 				entity.getSubject(), 
 				entity.getDifficulty(), 
 				entity.getTimeAnswered(), 
