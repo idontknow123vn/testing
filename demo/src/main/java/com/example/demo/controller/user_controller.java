@@ -82,7 +82,7 @@ public class user_controller {
 		user_service.updateUser(dto);
 		return new ResponseEntity<String>("User successfully logged out", HttpStatus.OK);
 	}
-	@PutMapping(value = "/rank")
+	@GetMapping(value = "/rank")
 	public ResponseEntity<Object> getTop10(){
 		List<user_dto> list = user_service.getTopTen();
 		return new ResponseEntity<Object>(list, HttpStatus.OK);
