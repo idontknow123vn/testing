@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -83,7 +84,7 @@ public class quizz_service_impl implements quizz_service {
 		// TODO Auto-generated method stub
 		quizz_entity updateEntity = quizz_repos.findById(dto.getIdquizz()).get();
 		updateEntity.setQuizz_info(dto.getQuizz_info());
-		updateEntity.setPicture(dto.getPicture());
+		updateEntity.setPicture(Base64.getDecoder().decode(dto.getPicture()));
 		updateEntity.setDifficulty(dto.getDifficulty());
 		updateEntity.setSubject(dto.getSubject());
 		updateEntity.setTimeAnswered(dto.getTimeAnswered());

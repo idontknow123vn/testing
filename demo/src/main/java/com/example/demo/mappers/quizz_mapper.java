@@ -1,6 +1,7 @@
 package com.example.demo.mappers;
 
 import java.util.Random;
+import java.util.Base64;
 
 import com.example.demo.dto.quizz_dto;
 import com.example.demo.entities.quizz_entity;
@@ -11,7 +12,7 @@ public class quizz_mapper {
 		quizz_dto dto = new quizz_dto(
 				entity.getIdquizz(), 
 				entity.getQuizz_info(), 
-				entity.getPicture(), 
+				Base64.getEncoder().encodeToString(entity.getPicture()), 
 				entity.getSubject(), 
 				entity.getDifficulty(), 
 				entity.getTimeAnswered(), 
@@ -25,7 +26,7 @@ public class quizz_mapper {
 		quizz_entity entity = new quizz_entity(
 				dto.getIdquizz(), 
 				dto.getQuizz_info(), 
-				dto.getPicture(), 
+				(dto.getPicture() == null) ? null : Base64.getDecoder().decode(dto.getPicture()), 
 				dto.getSubject(), 
 				dto.getDifficulty(), 
 				dto.getTimeAnswered()
@@ -36,7 +37,7 @@ public class quizz_mapper {
 		quizz_dto dto = new quizz_dto(
 				entity.getIdquizz(),
 				entity.getQuizz_info(),
-				entity.getPicture(),
+				(entity.getPicture() == null) ? null :Base64.getEncoder().encodeToString(entity.getPicture()),
 				entity.getSubject(),
 				entity.getDifficulty(),
 				entity.getTimeAnswered());
@@ -72,7 +73,7 @@ public class quizz_mapper {
 		quizz_entity entity = new quizz_entity(
 				dto.getIdquizz(), 
 				dto.getQuizz_info(), 
-				dto.getPicture(), 
+				(dto.getPicture() == null) ? null :Base64.getDecoder().decode(dto.getPicture()), 
 				dto.getSubject(), 
 				dto.getDifficulty(), 
 				dto.getTimeAnswered(),
