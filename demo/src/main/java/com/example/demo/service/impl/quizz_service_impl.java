@@ -84,7 +84,7 @@ public class quizz_service_impl implements quizz_service {
 		// TODO Auto-generated method stub
 		quizz_entity updateEntity = quizz_repos.findById(dto.getIdquizz()).get();
 		updateEntity.setQuizz_info(dto.getQuizz_info());
-		updateEntity.setPicture(Base64.getDecoder().decode(dto.getPicture()));
+		updateEntity.setPicture(dto.getPicture() == null ? null : Base64.getDecoder().decode(dto.getPicture()));
 		updateEntity.setDifficulty(dto.getDifficulty());
 		updateEntity.setSubject(dto.getSubject());
 		updateEntity.setTimeAnswered(dto.getTimeAnswered());
