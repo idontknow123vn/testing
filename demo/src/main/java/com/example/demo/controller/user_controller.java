@@ -67,10 +67,10 @@ public class user_controller {
 	            return new ResponseEntity<Object>(foundUser, HttpStatus.OK);
 	        } else {
 	            // Trả về một JSON với giá trị null khi xác thực không thành công
-	            return new ResponseEntity<Object>("Sai tài khoản hoặc mật khẩu", HttpStatus.NO_CONTENT);
+	            return new ResponseEntity<Object>("Sai tài khoản hoặc mật khẩu", HttpStatus.ALREADY_REPORTED);
 	        }
 	    } catch(SecurityException e) {
-	    	return new ResponseEntity<>("Tài khoản đăng nhập ở 1 nơi khác", HttpStatus.NOT_ACCEPTABLE);
+	    	return new ResponseEntity<>("Tài khoản đăng nhập ở 1 nơi khác", HttpStatus.ACCEPTED);
 	    } 
 		catch (Exception e) {
 	        // Xử lý các trường hợp lỗi và trả về một JSON với giá trị null
@@ -82,7 +82,7 @@ public class user_controller {
 		user_service.updateUser(dto);
 		return new ResponseEntity<String>("User successfully logged out", HttpStatus.OK);
 	}
-	@PutMapping(value = "/rank")
+	@GetMapping(value = "/rank")
 	public ResponseEntity<Object> getTop10(){
 		List<user_dto> list = user_service.getTopTen();
 		return new ResponseEntity<Object>(list, HttpStatus.OK);

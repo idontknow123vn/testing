@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 public class quizz_dto {
 	private long idquizz;
 	private String quizz_info;
-	private byte[] picture;
+	private String picture;
 	private String subject;
 	private int difficulty;
 	private int timeAnswered;
@@ -22,7 +22,7 @@ public class quizz_dto {
 		
 	}
 
-	public quizz_dto(long idquizz, String quizz_info, byte[] picture, String subject, int difficulty, int timeAnswered,
+	public quizz_dto(long idquizz, String quizz_info, String picture, String subject, int difficulty, int timeAnswered,
 			choose_one_entity choose_one, Collection<writing_entity> writing, Collection<choose_many_entity> choose_many) {
 		super();
 		this.idquizz = idquizz;
@@ -36,7 +36,7 @@ public class quizz_dto {
 		this.choose_many = choose_many;
 	}
 
-	public quizz_dto(long idquizz, String quizz_info, byte[] picture, String subject, int difficulty,
+	public quizz_dto(long idquizz, String quizz_info, String picture, String subject, int difficulty,
 			int timeAnswered) {
 		super();
 		this.idquizz = idquizz;
@@ -63,11 +63,11 @@ public class quizz_dto {
 		this.quizz_info = quizz_info;
 	}
 
-	public byte[] getPicture() {
+	public String getPicture() {
 		return picture;
 	}
 
-	public void setPicture(byte[] picture) {
+	public void setPicture(String picture) {
 		this.picture = picture;
 	}
 

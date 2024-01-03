@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -39,11 +40,11 @@ public class quizz_service_impl implements quizz_service {
 	public quizz_dto createQuizz(quizz_dto dto) {
 		// TODO Auto-generated method stub
 		quizz_entity entity = quizz_mapper.mapToQuizz_entityFull(dto);
-		if(entity.getChoose_one() == null) {
-			choose_one_entity one = choose_one_mapper.mapToChoose_one_entity(new choose_one_dto());
-			entity.setChoose_one(one);
-			one.setQuizz(entity);
-		}
+//		if(entity.getChoose_one() == null) {
+//			choose_one_entity one = choose_one_mapper.mapToChoose_one_entity(new choose_one_dto());
+//			entity.setChoose_one(one);
+//			one.setQuizz(entity);
+//		}
 		quizz_entity createdEntity = quizz_repos.save(entity);
 		Collection<writing_entity> dto_writing = dto.getWriting();
 		if(dto_writing != null) {
@@ -83,10 +84,27 @@ public class quizz_service_impl implements quizz_service {
 		// TODO Auto-generated method stub
 		quizz_entity updateEntity = quizz_repos.findById(dto.getIdquizz()).get();
 		updateEntity.setQuizz_info(dto.getQuizz_info());
-		updateEntity.setPicture(dto.getPicture());
+		updateEntity.setPicture(dto.getPicture() == null ? null : Base64.getDecoder().decode(dto.getPicture()));
 		updateEntity.setDifficulty(dto.getDifficulty());
 		updateEntity.setSubject(dto.getSubject());
 		updateEntity.setTimeAnswered(dto.getTimeAnswered());
+		updateEntity.setChoose_one(dto.getChoose_one());
+		Collection<writing_entity> dto_writing = dto.getWriting();
+		if(dto_writing != null) {
+			for (writing_entity i : dto_writing) {
+				i.setIdquizz(updateEntity.getIdquizz());
+			}
+			updateEntity.setWriting(dto_writing);
+		}
+		else updateEntity.setWriting(null);
+		Collection<choose_many_entity> dto_choose_many = dto.getChoose_many();
+		if(dto_choose_many != null) {
+			for (choose_many_entity i : dto_choose_many) {
+				i.setIdquizz(updateEntity.getIdquizz());
+			}
+			updateEntity.setChoose_many(dto_choose_many);
+		}
+		else updateEntity.setChoose_many(null);
 		quizz_entity returnEntity = quizz_repos.save(updateEntity);
 		return quizz_mapper.mapToQuizz_dto(returnEntity);
 	}
